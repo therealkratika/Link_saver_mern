@@ -19,7 +19,7 @@ services:
       EMAIL_USER : therealkratikagupta@gmail.com
       MONGO_URI : mongodb://mongo:27017/linksaver
       JWT_SECRET : defa1925799c07918b1b18494bffeef6f048b31aa349c9a36d8ff3f537d89835
-      BASE_URL : http://localhost:5000
+      BASE_URL : https://your-backend-url.onrender.com
       PORT : 5000
 
     depends_on:

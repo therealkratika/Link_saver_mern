@@ -21,8 +21,6 @@ export const AuthSDK = {
         email,
         password
       });
-
-      // store token
       localStorage.setItem("token", res.data.token);
 
       return res.data;
