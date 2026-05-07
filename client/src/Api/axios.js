@@ -1,39 +1,19 @@
 import axios from "axios";
 
-// Create axios instance
 const api = axios.create({
-  baseURL: "http://localhost:5000/api", // your backend URL
-  headers: {
-    "Content-Type": "application/json"
-  }
+  baseURL: "http://localhost:5000/api",
 });
 
-// 🔐 Request Interceptor (attach token automatically)
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("token");
+// attach token automatically
+api.interceptors.request.use((config) => {
 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
+  const token = localStorage.getItem("token");
 
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-// ⚠️ Response Interceptor (handle errors globally)
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response && error.response.status === 401) {
-      console.log("Unauthorized - redirect to login");
-      // optional: logout user
-      localStorage.removeItem("token");
-      window.location.href = "/login";
-    }
-    return Promise.reject(error);
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
-);
+
+  return config;
+});
 
 export default api;

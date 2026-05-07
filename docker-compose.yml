@@ -15,8 +15,12 @@ services:
     ports:
       - "5000:5000"
     environment:
-      MONGO_URI: mongodb://mongo:27017/linksaver
-      JWT_SECRET: defa1925799c07918b1b18494bffeef6f048b31aa349c9a36d8ff3f537d89835
+      EMAIL_PASS : kbktlazzkdukslso
+      EMAIL_USER : therealkratikagupta@gmail.com
+      MONGO_URI : mongodb://mongo:27017/linksaver
+      JWT_SECRET : defa1925799c07918b1b18494bffeef6f048b31aa349c9a36d8ff3f537d89835
+      BASE_URL : http://localhost:5000
+      PORT : 5000
 
     depends_on:
       - mongo

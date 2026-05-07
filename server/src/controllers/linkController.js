@@ -1,6 +1,4 @@
 const Link = require("../models/Link");
-
-// ✅ GET ALL LINKS
 exports.getLinks = async (req, res) => {
   try {
     const links = await Link.find({ user: req.user.id }).sort({ createdAt: -1 });
@@ -9,8 +7,6 @@ exports.getLinks = async (req, res) => {
     res.status(500).json({ msg: err.message });
   }
 };
-
-// ✅ CREATE LINK
 exports.createLink = async (req, res) => {
   try {
     const link = await Link.create({
@@ -23,8 +19,6 @@ exports.createLink = async (req, res) => {
     res.status(500).json({ msg: err.message });
   }
 };
-
-// ✅ UPDATE LINK
 exports.updateLink = async (req, res) => {
   try {
     const link = await Link.findOneAndUpdate(
@@ -38,8 +32,6 @@ exports.updateLink = async (req, res) => {
     res.status(500).json({ msg: err.message });
   }
 };
-
-// ✅ DELETE LINK
 exports.deleteLink = async (req, res) => {
   try {
     await Link.findOneAndDelete({
@@ -52,8 +44,6 @@ exports.deleteLink = async (req, res) => {
     res.status(500).json({ msg: err.message });
   }
 };
-
-// ⭐ TOGGLE FAVORITE
 exports.toggleFavorite = async (req, res) => {
   try {
     const link = await Link.findOne({

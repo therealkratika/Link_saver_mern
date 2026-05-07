@@ -13,6 +13,7 @@ export function LoginPage() {
     try {
       await AuthSDK.login({ email, password }); 
       navigate("/dashboard"); 
+      window.location.reload();
     } catch (err) {
       alert(err.msg || "Login failed"); 
     }
@@ -67,6 +68,7 @@ export function LoginPage() {
             </div>
 
             <button
+            
               type="submit"
               className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 active:transform active:scale-[0.98] transition-all font-medium shadow-md hover:shadow-lg"
             >

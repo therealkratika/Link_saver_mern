@@ -11,7 +11,6 @@ const {
 
 const { verifyToken } = require("../middleware/authMiddleware");
 
-// 🔐 all routes protected
 router.use(verifyToken);
 
 router.get("/", getLinks);
