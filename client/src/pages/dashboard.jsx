@@ -5,8 +5,8 @@ import { LinkCard } from '../component/linkcard';
 import { AddLinkModal } from '../component/addLink';
 import { EmptyState } from '../component/emptyState';
 import { SearchBar } from '../component/search';
-import { LinkSDK } from '../api/linkSDK';
-import { AuthSDK } from '../api/authSDK';
+import { LinkSDK } from '../Api/linkSDK';
+import { AuthSDK } from '../Api/authSDK';
 
 export function Dashboard({ showToast }) {
 
