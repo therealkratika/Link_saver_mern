@@ -6,7 +6,7 @@ import { AddLinkModal } from '../component/addLink';
 import { EmptyState } from '../component/emptyState';
 import { SearchBar } from '../component/search';
 import { LinkSDK } from '../Api/linkSDK';
-import { AuthSDK } from '../Api/authSDK';
+import { AuthSDK } from '../Api/AuthSDK';
 
 export function Dashboard({ showToast }) {
 
