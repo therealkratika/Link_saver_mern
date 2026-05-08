@@ -18,15 +18,20 @@ export const AuthSDK = {
   login: async ({ email, password }) => {
     try {
       const res = await api.post("/auth/login", {
-        email,
-        password
-      });
-const token = res?.data?.token;
+      email,
+      password,
+    });
 
-if (token && typeof token === "string") {
-  localStorage.setItem("token", token);
+    const token = res?.data?.token;
+
+      if (
+      token &&
+      typeof token === "string"
+  ) {
+    localStorage.setItem("token", token);
 }
-      return res.data;
+
+return res.data;
 
     } catch (err) {
       throw err.response?.data || { msg: "Login failed" };
