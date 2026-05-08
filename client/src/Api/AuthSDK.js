@@ -21,8 +21,11 @@ export const AuthSDK = {
         email,
         password
       });
-      localStorage.setItem("token", res.data.token);
+const token = res?.data?.token;
 
+if (token && typeof token === "string") {
+  localStorage.setItem("token", token);
+}
       return res.data;
 
     } catch (err) {

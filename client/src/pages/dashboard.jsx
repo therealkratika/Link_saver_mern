@@ -96,8 +96,6 @@ export function Dashboard({ showToast }) {
   try {
 
     let validatedUrl = linkData.url.trim();
-
-    // add https automatically
     if (
       !validatedUrl.startsWith("http://") &&
       !validatedUrl.startsWith("https://")

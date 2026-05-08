@@ -8,9 +8,27 @@ export function LinkCard({ link, onToggleFavorite, onEdit, onDelete, showToast }
     if (showToast) showToast('Link copied!');
   };
 
-  const handleOpen = () => {
-    window.open(link.url, '_blank');
-  };
+ const handleOpen = () => {
+  try {
+    const parsedUrl = new URL(link.url);
+
+    if (
+      parsedUrl.protocol === "http:" ||
+      parsedUrl.protocol === "https:"
+    ) {
+      window.open(link.url, "_blank", "noopener,noreferrer");
+    } else {
+      if (showToast) {
+        showToast("Invalid URL");
+      }
+    }
+
+  } catch (err) {
+    if (showToast) {
+      showToast("Invalid URL");
+    }
+  }
+};
 
   const formatDate = (date) => {
     const d = new Date(date);
