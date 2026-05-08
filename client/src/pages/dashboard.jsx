@@ -92,42 +92,62 @@ export function Dashboard({ showToast }) {
     }
   };
   const handleSaveLink = async (linkData) => {
-    try {
 
-      if (editingLink) {
+  try {
 
-        const res = await LinkSDK.updateLink(
-          editingLink._id,
-          linkData
-        );
+    let validatedUrl = linkData.url.trim();
 
-        setLinks(prev =>
-          prev.map(link =>
-            link._id === editingLink._id
-              ? res.data
-              : link
-          )
-        );
-
-        showToast('Link updated successfully');
-
-        setEditingLink(null);
-
-      } else {
-
-        const res = await LinkSDK.createLink(linkData);
-
-        setLinks(prev => [res.data, ...prev]);
-
-        showToast('New link saved');
-      }
-
-      setIsModalOpen(false);
-
-    } catch (err) {
-      console.error(err);
+    // add https automatically
+    if (
+      !validatedUrl.startsWith("http://") &&
+      !validatedUrl.startsWith("https://")
+    ) {
+      validatedUrl = `https://${validatedUrl}`;
     }
-  };
+    new URL(validatedUrl);
+
+    const safeData = {
+      ...linkData,
+      url: validatedUrl,
+    };
+
+    if (editingLink) {
+
+      const res = await LinkSDK.updateLink(
+        editingLink._id,
+        safeData
+      );
+
+      setLinks(prev =>
+        prev.map(link =>
+          link._id === editingLink._id
+            ? res.data
+            : link
+        )
+      );
+
+      showToast('Link updated successfully');
+
+      setEditingLink(null);
+
+    } else {
+
+      const res = await LinkSDK.createLink(safeData);
+
+      setLinks(prev => [res.data, ...prev]);
+
+      showToast('New link saved');
+    }
+
+    setIsModalOpen(false);
+
+  } catch (err) {
+
+    console.error(err);
+
+    showToast("Invalid URL");
+  }
+};
   const allTags = useMemo(() => {
 
     const tagSet = new Set();
