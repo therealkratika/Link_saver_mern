@@ -9,11 +9,20 @@ exports.getLinks = async (req, res) => {
 };
 exports.createLink = async (req, res) => {
   try {
-    const link = await Link.create({
-      ...req.body,
-      user: req.user.id
-    });
+    const {
+  url,
+  title,
+  favicon,
+  tags
+} = req.body;
 
+const link = await Link.create({
+  url,
+  title,
+  favicon,
+  tags,
+  user: req.user.id
+});
     res.json(link);
   } catch (err) {
     res.status(500).json({ msg: err.message });
@@ -21,9 +30,16 @@ exports.createLink = async (req, res) => {
 };
 exports.updateLink = async (req, res) => {
   try {
+    const {
+  url,
+  title,
+  favicon,
+  tags
+} = req.body;
+
     const link = await Link.findOneAndUpdate(
       { _id: req.params.id, user: req.user.id },
-      req.body,
+      { url, title, favicon, tags },
       { new: true }
     );
 
