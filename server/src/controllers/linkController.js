@@ -8,24 +8,52 @@ exports.getLinks = async (req, res) => {
   }
 };
 exports.createLink = async (req, res) => {
-  try {
-    const {
-  url,
-  title,
-  favicon,
-  tags
-} = req.body;
 
-const link = await Link.create({
-  url,
-  title,
-  favicon,
-  tags,
-  user: req.user.id
-});
+  try {
+
+    let {
+      url,
+      title,
+      favicon,
+      tags
+    } = req.body;
+
+    // validation
+    if (!url || typeof url !== "string") {
+      return res.status(400).json({
+        msg: "Invalid URL"
+      });
+    }
+
+    // sanitize
+    url = url.trim();
+    title = typeof title === "string"
+      ? title.trim()
+      : "";
+
+    favicon = typeof favicon === "string"
+      ? favicon.trim()
+      : "";
+
+    tags = Array.isArray(tags)
+      ? tags.map(tag => String(tag).trim())
+      : [];
+
+    const link = await Link.create({
+      url,
+      title,
+      favicon,
+      tags,
+      user: req.user.id
+    });
+
     res.json(link);
+
   } catch (err) {
-    res.status(500).json({ msg: err.message });
+
+    res.status(500).json({
+      msg: err.message
+    });
   }
 };
 exports.updateLink = async (req, res) => {
