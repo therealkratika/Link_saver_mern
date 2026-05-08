@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import PropTypes from "prop-types";
 export function AddLinkModal({ isOpen, onClose, onSave, editLink }) {
   const [url, setUrl] = useState('');
   const [title, setTitle] = useState('');
@@ -86,10 +86,16 @@ export function AddLinkModal({ isOpen, onClose, onSave, editLink }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       
-      <div 
-        className="absolute inset-0 bg-gray-900/50 backdrop-blur-sm" 
-        onClick={onClose} 
-      />
+      <div className="absolute inset-0 bg-gray-900/50 backdrop-blur-sm"
+        onClick={onClose}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+       if (e.key === "Enter" || e.key === " ") {
+         onClose();
+      }
+    }}
+  />
       
       <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 overflow-hidden">
         
@@ -109,11 +115,12 @@ export function AddLinkModal({ isOpen, onClose, onSave, editLink }) {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-
-          {/* URL */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">URL</label>
+            <label 
+              htmlFor='url'
+            className="block text-sm font-semibold text-gray-700 mb-2">URL</label>
             <input
+              id="url"
               type="url"
               value={url}
               onChange={handleUrlChange}
@@ -122,8 +129,6 @@ export function AddLinkModal({ isOpen, onClose, onSave, editLink }) {
               className="w-full px-4 py-2.5 border border-gray-300 bg-white text-gray-900 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
             />
           </div>
-
-          {/* Loading */}
           {isLoading && (
             <div className="flex items-center gap-2 text-sm text-blue-600 animate-pulse">
               <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
@@ -132,8 +137,6 @@ export function AddLinkModal({ isOpen, onClose, onSave, editLink }) {
               Fetching preview...
             </div>
           )}
-
-          {/* Preview */}
           {favicon && (
             <div className="flex items-center gap-3 p-3 bg-gray-50 border border-gray-100 rounded-xl">
               <img
@@ -152,11 +155,14 @@ export function AddLinkModal({ isOpen, onClose, onSave, editLink }) {
               </div>
             </div>
           )}
-
-          {/* Title */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Title</label>
+            <label 
+            htmlFor='title'
+            className="block text-sm font-semibold text-gray-700 mb-2"
+            >Title
+            </label>
             <input
+              id = "title"
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -165,11 +171,12 @@ export function AddLinkModal({ isOpen, onClose, onSave, editLink }) {
               className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
             />
           </div>
-
-          {/* Tags */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Tags</label>
+            <label
+             htmlFor='tags'
+             className="block text-sm font-semibold text-gray-700 mb-2">Tags</label>
             <input
+              id="tags"
               type="text"
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
@@ -200,8 +207,6 @@ export function AddLinkModal({ isOpen, onClose, onSave, editLink }) {
               </div>
             )}
           </div>
-
-          {/* Buttons */}
           <div className="flex gap-3 pt-4">
             <button
               type="button"
@@ -224,3 +229,15 @@ export function AddLinkModal({ isOpen, onClose, onSave, editLink }) {
     </div>
   );
 }
+AddLinkModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+
+  editLink: PropTypes.shape({
+    url: PropTypes.string,
+    title: PropTypes.string,
+    favicon: PropTypes.string,
+    tags: PropTypes.arrayOf(PropTypes.string),
+  }),
+};
