@@ -12,9 +12,11 @@ connectDB();
 
 const app = express();
 app.use(cors({
-   origin:"https://link-saver-mern-914j.onrender.com",
-  credentials: true}
-));
+  origin: [
+    "https://link-saver-mern-914j.onrender.com"
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
