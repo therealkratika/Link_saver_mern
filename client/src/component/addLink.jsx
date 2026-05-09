@@ -71,11 +71,15 @@ export function AddLinkModal({ isOpen, onClose, onSave, editLink }) {
 
     if (url && title) {
       onSave({
-        url,
-        title,
-        favicon,
-        tags
-      });
+  url,
+  title,
+  favicon,
+
+  tags: tags
+    .split(",")
+    .map(tag => tag.trim())
+    .filter(Boolean),
+});
 
       onClose(); 
     }
