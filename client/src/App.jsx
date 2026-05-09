@@ -4,6 +4,8 @@ import { LandingPage } from './pages/landing';
 import { LoginPage } from './pages/login';
 import { SignupPage } from './pages/signup';
 import { Dashboard } from './pages/dashboard';
+import { ForgotPassword } from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 export default function App() {
   const [notification, setNotification] = useState(null);
