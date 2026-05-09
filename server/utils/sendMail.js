@@ -18,8 +18,6 @@ const sendVerificationEmail =
       html: `
         <h2>Email Verification</h2>
 
-        <p>Click below to verify your account:</p>
-
         <a href="${verificationLink}">
           Verify Email
         </a>
@@ -27,4 +25,30 @@ const sendVerificationEmail =
     });
 };
 
-module.exports = sendVerificationEmail;
+const sendResetPasswordEmail =
+  async (email, token) => {
+
+    const resetLink =
+      `https://link-saver-mern-914j.onrender.com/reset-password/${token}`;
+
+    await resend.emails.send({
+      from: "onboarding@resend.dev",
+      to: email,
+      subject: "Reset Your Password",
+
+      html: `
+        <h2>Password Reset</h2>
+
+        <p>Click below to reset password:</p>
+
+        <a href="${resetLink}">
+          Reset Password
+        </a>
+      `,
+    });
+};
+
+module.exports = {
+  sendVerificationEmail,
+  sendResetPasswordEmail,
+};

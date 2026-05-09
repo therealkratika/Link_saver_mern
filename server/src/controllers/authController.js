@@ -2,8 +2,7 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Joi = require("joi");
-
-const sendVerificationEmail = require("../../utils/sendMail");
+const { sendVerificationEmail, sendResetPasswordEmail } = require("../../utils/sendMail");
 
 const signupSchema = Joi.object({
   name: Joi.string().min(3).max(30).required(),
@@ -206,9 +205,78 @@ const verifyEmail = async (req, res) => {
     });
   }
 };
+const forgotPassword = async (req, res) => {
+  try{
+      const { email } = req.body;
+      const user = await User.findOne({ email: email.trim().toLowerCase() });
 
+      if (!user) {
+          return res.status(404).json({ msg: "User not found" });
+      }
+
+      const resetToken = jwt.sign(
+          { id: user._id },
+          process.env.JWT_SECRET,
+          { expiresIn: "1h" }
+      );
+      await sendResetPasswordEmail(user.email, resetToken);
+
+      res.json({ msg: "Password reset email sent" });
+
+  }catch(err){
+      res.status(500).json({ error: err.message });
+  }
+}
+const resetPassword = async (req, res) => {
+
+  try {
+
+    const { token } = req.params;
+    const { password } = req.body;
+
+    if (!password || password.length < 6) {
+      return res.status(400).json({
+        msg: "Password must be at least 6 characters",
+      });
+    }
+
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET
+    );
+
+    const user = await User.findById(
+      decoded.id
+    );
+
+    if (!user) {
+      return res.status(404).json({
+        msg: "User not found",
+      });
+    }
+
+    const hashedPassword =
+      await bcrypt.hash(password, 10);
+
+    user.password = hashedPassword;
+
+    await user.save();
+
+    res.json({
+      msg: "Password reset successful",
+    });
+
+  } catch (err) {
+
+    res.status(400).json({
+      msg: "Invalid or expired token",
+    });
+  }
+};
 module.exports = {
   signup,
   login,
+  forgotPassword,
+  resetPassword,
   verifyEmail,
 };

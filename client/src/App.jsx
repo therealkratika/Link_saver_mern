@@ -48,6 +48,15 @@ export default function App() {
               : <Navigate to="/login" />
           } 
         />
+        <Route
+  path="/forgot-password"
+  element={<ForgotPassword />}
+/>
+
+<Route
+  path="/reset-password/:token"
+  element={<ResetPassword />}
+/>
 
       </Routes>
 

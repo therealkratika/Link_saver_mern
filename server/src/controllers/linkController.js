@@ -6,7 +6,6 @@ const linkSchema = Joi.object({
   favicon: Joi.string().allow("").optional(),
   tags: Joi.array().items(Joi.string().allow("")).optional(),
 });
-
 const validateBody = (body) => {
   const { error } = linkSchema.validate(body);
   if (error) return error.details[0].message;
