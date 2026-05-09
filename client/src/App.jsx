@@ -4,7 +4,7 @@ import { LandingPage } from './pages/landing';
 import { LoginPage } from './pages/login';
 import { SignupPage } from './pages/signup';
 import { Dashboard } from './pages/dashboard';
-import { ForgotPassword } from './pages/ForgotPassword';
+import ForgotPassword  from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 
 export default function App() {
@@ -51,15 +51,13 @@ export default function App() {
           } 
         />
         <Route
-  path="/forgot-password"
-  element={<ForgotPassword />}
-/>
-
-<Route
-  path="/reset-password/:token"
-  element={<ResetPassword />}
-/>
-
+          path="/forgot-password"
+          element={<ForgotPassword />}
+        />
+        <Route
+          path="/reset-password/:token"
+          element={<ResetPassword />}
+        />
       </Routes>
 
       {notification && (

@@ -2,44 +2,31 @@ import { useState } from "react";
 import api from "../Api/axios";
 
 export default function ForgotPassword() {
-
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-
   const handleSubmit = async (e) => {
-
     e.preventDefault();
-
     try {
-
       setLoading(true);
-
       const res = await api.post(
         "/auth/forgot-password",
         { email }
       );
-
       setMessage(res.data.msg);
-
     } catch (err) {
-
       setMessage(
         err?.response?.data?.msg ||
         "Something went wrong"
       );
-
     } finally {
-
       setLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-
       <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg">
-
         <h2 className="text-3xl font-bold text-center mb-2">
           Forgot Password
         </h2>

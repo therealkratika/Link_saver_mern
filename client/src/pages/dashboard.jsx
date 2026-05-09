@@ -343,13 +343,9 @@ const handleSaveLink = async (linkData) => {
                 </>
               }
             />
-
           </Routes>
-
         </div>
-
       </main>
-
       <AddLinkModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
