@@ -170,15 +170,6 @@ export function SignupPage() {
 
             </div>
 
-            <div className="flex items-start gap-2">
-
-              <input
-                type="checkbox"
-                className="mt-1 rounded text-blue-600 focus:ring-blue-500"
-                required
-                id="terms"
-              />
-            </div>
             <button
               type="submit"
               className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 active:transform active:scale-[0.98] transition-all font-medium shadow-md hover:shadow-lg"
