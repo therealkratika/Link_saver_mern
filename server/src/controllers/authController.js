@@ -5,8 +5,6 @@ const Joi = require("joi");
 
 const sendVerificationEmail = require("../../utils/sendMail");
 
-/* ================= VALIDATION SCHEMAS ================= */
-
 const signupSchema = Joi.object({
   name: Joi.string().min(3).max(30).required(),
 
@@ -27,8 +25,6 @@ const loginSchema = Joi.object({
   password: Joi.string()
     .required(),
 });
-
-/* ================= SIGNUP ================= */
 
 const signup = async (req, res) => {
   const { error } = signupSchema.validate(req.body);
@@ -87,8 +83,6 @@ const signup = async (req, res) => {
     });
   }
 };
-
-/* ================= LOGIN ================= */
 
 const login = async (req, res) => {
   const { error } = loginSchema.validate(req.body);
@@ -153,8 +147,6 @@ const login = async (req, res) => {
     });
   }
 };
-
-/* ================= VERIFY EMAIL ================= */
 
 const verifyEmail = async (req, res) => {
   try {
