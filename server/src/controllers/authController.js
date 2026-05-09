@@ -27,9 +27,14 @@ const loginSchema = Joi.object({
 });
 
 const signup = async (req, res) => {
+
+  console.log("SIGNUP ROUTE HIT");
+
   const { error } = signupSchema.validate(req.body);
 
   if (error) {
+    console.log("VALIDATION ERROR:", error.message);
+
     return res.status(400).json({
       msg: error.details[0].message,
     });
@@ -38,27 +43,39 @@ const signup = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
+
     const sanitizedEmail =
       email.trim().toLowerCase();
+
+    console.log("Checking existing user");
 
     const existingUser = await User.findOne({
       email: sanitizedEmail,
     });
 
     if (existingUser) {
+
+      console.log("USER ALREADY EXISTS");
+
       return res.status(400).json({
         msg: "User already exists",
       });
     }
 
+    console.log("Hashing password");
+
     const hashedPassword =
       await bcrypt.hash(password, 10);
+
+    console.log("Creating token");
 
     const verificationToken = jwt.sign(
       { email: sanitizedEmail },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
+
+    console.log("Creating user");
 
     await User.create({
       name,
@@ -68,32 +85,23 @@ const signup = async (req, res) => {
       isVerified: false,
     });
 
-    console.log("Before mail");
+    console.log("BEFORE MAIL");
 
-try {
+    await sendVerificationEmail(
+      sanitizedEmail,
+      verificationToken
+    );
 
-  await sendVerificationEmail(
-    sanitizedEmail,
-    verificationToken
-  );
-
-  console.log("Mail function completed");
-
-} catch (mailErr) {
-
-  console.log("MAIL ERROR:", mailErr);
-
-  return res.status(500).json({
-    msg: "Email could not be sent",
-    error: mailErr.message,
-  });
-}
+    console.log("AFTER MAIL");
 
     res.json({
       msg: "User registered. Verification email sent.",
     });
 
   } catch (err) {
+
+    console.log("SIGNUP ERROR:", err);
+
     res.status(500).json({
       error: err.message,
     });

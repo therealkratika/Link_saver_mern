@@ -24,13 +24,12 @@ export const AuthSDK = {
 
     const token = res?.data?.token;
 
-      if (
-      token &&
-      typeof token === "string"
-  ) {
+// Regex for a typical JWT (Header.Payload.Signature)
+const jwtRegex = /^[a-zA-Z0-9\-_]+\.[a-zA-Z0-9\-_]+\.[a-zA-Z0-9\-_]+$/;
+
+if (token && typeof token === "string" && jwtRegex.test(token)) {
     localStorage.setItem("token", token);
 }
-
 return res.data;
 
     } catch (err) {
