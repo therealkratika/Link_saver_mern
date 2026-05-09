@@ -9,7 +9,12 @@ import ResetPassword from './pages/ResetPassword';
 
 export default function App() {
   const [notification, setNotification] = useState(null);
+const token = localStorage.getItem("token");
 
+const isAuthenticated =
+  token &&
+  token.split(".").length === 3;
+  
   useEffect(() => {
     if (notification) {
       const timer = setTimeout(() => setNotification(null), 3000);
