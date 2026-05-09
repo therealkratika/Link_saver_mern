@@ -51,5 +51,6 @@ return res.data;
 
   isAuthenticated: () => {
     return !!localStorage.getItem("token");
-  }
+  },
+
 };

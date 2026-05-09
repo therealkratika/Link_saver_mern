@@ -20,7 +20,6 @@ export default function App() {
   const showToast = (message) => {
     setNotification(message);
   };
-  const isAuthenticated = !!localStorage.getItem("token");
 
   return (
     <Router>
