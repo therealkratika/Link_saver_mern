@@ -1,4 +1,4 @@
-const Link = require("../models/Link");
+const Link = require("../models/Link.js");
 const Joi = require("joi");
 const linkSchema = Joi.object({
   url: Joi.string().uri().required(),
