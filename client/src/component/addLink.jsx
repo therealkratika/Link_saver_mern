@@ -75,10 +75,12 @@ export function AddLinkModal({ isOpen, onClose, onSave, editLink }) {
   title,
   favicon,
 
-  tags: tags
-    .split(",")
-    .map(tag => tag.trim())
-    .filter(Boolean),
+  tags: Array.isArray(tags)
+  ? tags
+  : tags
+      .split(",")
+      .map(tag => tag.trim())
+      .filter(Boolean),
 });
 
       onClose(); 
