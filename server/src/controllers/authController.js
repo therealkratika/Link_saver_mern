@@ -68,10 +68,26 @@ const signup = async (req, res) => {
       isVerified: false,
     });
 
-    await sendVerificationEmail(
-      sanitizedEmail,
-      verificationToken
-    );
+    console.log("Before mail");
+
+try {
+
+  await sendVerificationEmail(
+    sanitizedEmail,
+    verificationToken
+  );
+
+  console.log("Mail function completed");
+
+} catch (mailErr) {
+
+  console.log("MAIL ERROR:", mailErr);
+
+  return res.status(500).json({
+    msg: "Email could not be sent",
+    error: mailErr.message,
+  });
+}
 
     res.json({
       msg: "User registered. Verification email sent.",
