@@ -44,43 +44,36 @@ export function AddLinkModal({ isOpen, onClose, onSave, editLink }) {
       new URL(newUrl);
       fetchPreview(newUrl);
     } catch {
-      // ignore invalid URL
+      
     }
   };
 
-  const handleAddTag = (e) => {
-    if (e.key === 'Enter' && tagInput.trim()) {
-      e.preventDefault();
+const handleAddTag = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); 
 
       const newTag = tagInput.trim();
 
-      if (!tags.includes(newTag)) {
+      if (newTag && !tags.includes(newTag)) {
         setTags([...tags, newTag]);
+        setTagInput(''); 
       }
-
-      setTagInput('');
     }
   };
 
-  const removeTag = (tagToRemove) => {
-    setTags(tags.filter(tag => tag !== tagToRemove));
-  };
-
 const handleSubmit = (e) => {
-
   e.preventDefault();
-
   if (!url || !title) return;
-
-  console.log("TAGS BEFORE SAVE:", tags);
-
+  let finalTags = [...tags];
+  if (tagInput.trim() && !finalTags.includes(tagInput.trim())) {
+    finalTags.push(tagInput.trim());
+  }
   onSave({
     url,
     title,
     favicon,
-    tags,
+    tags: finalTags,
   });
-
   onClose();
 };
 

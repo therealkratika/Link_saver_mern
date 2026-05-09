@@ -4,7 +4,7 @@ const linkSchema = Joi.object({
   url: Joi.string().uri().required(),
   title: Joi.string().allow("").optional(),
   favicon: Joi.string().allow("").optional(),
-  tags: Joi.array().items(Joi.string()).optional(),
+  tags: Joi.array().items(Joi.string().allow("")).optional(),
 });
 
 const validateBody = (body) => {
@@ -18,15 +18,17 @@ const sanitizeLinkData = (data) => {
   
   return {
     url: String(url).trim(),
-    title: typeof title === "string" ? title.trim() : "",
+    title: typeof title === "string" ? title.trim() : "Untitled",
     favicon: typeof favicon === "string" ? favicon.trim() : "",
-    tags: Array.isArray(tags) ? tags.map((tag) => String(tag).trim()) : [],
+    tags: Array.isArray(tags) 
+      ? tags.map((tag) => String(tag).trim()).filter(tag => tag.length > 0) 
+      : [],
   };
 };
-const sendError = (res, err, status = 500) => {
-  res.status(status).json({ msg: err.message || err });
-};
 
+const sendError = (res, err, status = 500) => {
+  res.status(status).json({ msg: typeof err === "string" ? err : err.message });
+};
 exports.getLinks = async (req, res) => {
   try {
     const links = await Link.find({ user: req.user.id }).sort({ createdAt: -1 });
@@ -36,32 +38,20 @@ exports.getLinks = async (req, res) => {
   }
 };
 exports.createLink = async (req, res) => {
-  const validationError =
-    validateBody(req.body);
-
+  const validationError = validateBody(req.body);
   if (validationError) {
-    return sendError(
-      res,
-      validationError,
-      400
-    );
+    return sendError(res, validationError, 400);
   }
-  try {
-    const sanitizedData =
-      sanitizeLinkData(req.body);
 
-    const existingLink =
-      await Link.findOne({
-        url: sanitizedData.url,
-        user: req.user.id,
-      });
+  try {
+    const sanitizedData = sanitizeLinkData(req.body);
+    const existingLink = await Link.findOne({
+      url: sanitizedData.url,
+      user: req.user.id,
+    });
 
     if (existingLink) {
-      return sendError(
-        res,
-        "Link already exists",
-        400
-      );
+      return sendError(res, "This link is already in your collection", 400);
     }
 
     const link = await Link.create({
@@ -69,10 +59,8 @@ exports.createLink = async (req, res) => {
       user: req.user.id,
     });
 
-    res.json(link);
-
+    res.status(201).json(link);
   } catch (err) {
-
     sendError(res, err);
   }
 };
@@ -83,10 +71,11 @@ exports.updateLink = async (req, res) => {
 
   try {
     const sanitizedData = sanitizeLinkData(req.body);
+    
     const link = await Link.findOneAndUpdate(
       { _id: req.params.id, user: req.user.id },
-      sanitizedData,
-      { new: true }
+      { $set: sanitizedData }, 
+      { new: true, runValidators: true }
     );
 
     if (!link) return sendError(res, "Link not found", 404);
@@ -95,7 +84,6 @@ exports.updateLink = async (req, res) => {
     sendError(res, err);
   }
 };
-
 exports.deleteLink = async (req, res) => {
   try {
     const deletedLink = await Link.findOneAndDelete({
@@ -109,7 +97,6 @@ exports.deleteLink = async (req, res) => {
     sendError(res, err);
   }
 };
-
 exports.toggleFavorite = async (req, res) => {
   try {
     const link = await Link.findOne({ _id: req.params.id, user: req.user.id });
