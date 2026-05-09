@@ -178,23 +178,7 @@ export function SignupPage() {
                 required
                 id="terms"
               />
-
-              <label
-                htmlFor="terms"
-                className="text-xs text-gray-600 dark:text-gray-400"
-              >
-                I agree to the{' '}
-                <a href="#" className="text-blue-600 underline">
-                  Terms of Service
-                </a>{' '}
-                and{' '}
-                <a href="#" className="text-blue-600 underline">
-                  Privacy Policy
-                </a>.
-              </label>
-
             </div>
-
             <button
               type="submit"
               className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 active:transform active:scale-[0.98] transition-all font-medium shadow-md hover:shadow-lg"
