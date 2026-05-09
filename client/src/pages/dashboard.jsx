@@ -40,11 +40,13 @@ export function Dashboard({ showToast }) {
     fetchLinks();
 
   }, []);
+
   const handleLogout = () => {
     AuthSDK.logout();
     navigate("/login");
     window.location.reload();
   };
+
   const handleToggleFavorite = async (id) => {
     try {
 
@@ -67,6 +69,7 @@ export function Dashboard({ showToast }) {
       console.error(err);
     }
   };
+
   const handleEdit = (id) => {
 
     const link = links.find(l => l._id === id);
@@ -76,6 +79,7 @@ export function Dashboard({ showToast }) {
       setIsModalOpen(true);
     }
   };
+
   const handleDelete = async (id) => {
     try {
 
@@ -91,73 +95,73 @@ export function Dashboard({ showToast }) {
       console.error(err);
     }
   };
-const handleSaveLink = async (linkData) => {
 
-  try {
+  const handleSaveLink = async (linkData) => {
 
-    let validatedUrl = linkData.url.trim();
+    try {
 
-    if (
-      !validatedUrl.startsWith("http://") &&
-      !validatedUrl.startsWith("https://")
-    ) {
-      validatedUrl = `https://${validatedUrl}`;
+      let validatedUrl = linkData.url.trim();
+
+      if (
+        !validatedUrl.startsWith("http://") &&
+        !validatedUrl.startsWith("https://")
+      ) {
+        validatedUrl = `https://${validatedUrl}`;
+      }
+
+      new URL(validatedUrl);
+
+      const safeData = {
+        ...linkData,
+        url: validatedUrl,
+      };
+
+      if (editingLink) {
+
+        const res = await LinkSDK.updateLink(
+          editingLink._id,
+          safeData
+        );
+
+        setLinks(prev =>
+          prev.map(link =>
+            link._id === editingLink._id
+              ? res.data
+              : link
+          )
+        );
+
+        showToast("Link updated successfully");
+
+        setEditingLink(null);
+
+      } else {
+
+        const res = await LinkSDK.createLink(
+          safeData
+        );
+
+        setLinks(prev => [
+          res.data,
+          ...prev
+        ]);
+
+        showToast("New link saved");
+      }
+
+      setIsModalOpen(false);
+
+    } catch (err) {
+
+      console.error(err);
+
+      showToast(
+        err?.response?.data?.msg ||
+        "Invalid URL"
+      );
     }
+  };
 
-    new URL(validatedUrl);
-
-    const safeData = {
-      ...linkData,
-      url: validatedUrl,
-    };
-
-    console.log("SAFE DATA:", safeData);
-
-    if (editingLink) {
-
-      const res = await LinkSDK.updateLink(
-        editingLink._id,
-        safeData
-      );
-
-      setLinks(prev =>
-        prev.map(link =>
-          link._id === editingLink._id
-            ? res.data
-            : link
-        )
-      );
-
-      showToast("Link updated successfully");
-
-      setEditingLink(null);
-
-    } else {
-
-      const res = await LinkSDK.createLink(
-        safeData
-      );
-
-      setLinks(prev => [
-        res.data,
-        ...prev
-      ]);
-
-      showToast("New link saved");
-    }
-
-    setIsModalOpen(false);
-
-  } catch (err) {
-
-    console.error(err);
-
-    showToast(
-      err?.response?.data?.msg ||
-      "Invalid URL"
-    );
-  }
-};
   const allTags = useMemo(() => {
 
     const tagSet = new Set();
@@ -169,6 +173,7 @@ const handleSaveLink = async (linkData) => {
     return Array.from(tagSet).sort();
 
   }, [links]);
+
   const filteredLinks = useMemo(() => {
 
     let filtered = links;
@@ -218,6 +223,39 @@ const handleSaveLink = async (linkData) => {
       <main className="flex-1 overflow-auto">
 
         <div className="max-w-7xl mx-auto p-4 md:p-8 pt-20 md:pt-8">
+          <div className="flex items-center justify-between mb-6 md:hidden">
+
+            <button
+              onClick={() => setIsSidebarOpen(true)}
+              className="p-2 rounded-lg border border-gray-200 bg-white shadow-sm"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-6 h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+
+            <button
+              onClick={() => {
+                setEditingLink(null);
+                setIsModalOpen(true);
+              }}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg"
+            >
+              Add Link
+            </button>
+
+          </div>
 
           <div className="flex items-center justify-between mb-8">
 
@@ -346,6 +384,7 @@ const handleSaveLink = async (linkData) => {
           </Routes>
         </div>
       </main>
+
       <AddLinkModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
