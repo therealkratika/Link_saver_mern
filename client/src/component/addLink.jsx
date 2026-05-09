@@ -66,26 +66,23 @@ export function AddLinkModal({ isOpen, onClose, onSave, editLink }) {
     setTags(tags.filter(tag => tag !== tagToRemove));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+const handleSubmit = (e) => {
 
-    if (url && title) {
-      onSave({
-  url,
-  title,
-  favicon,
+  e.preventDefault();
 
-  tags: Array.isArray(tags)
-  ? tags
-  : tags
-      .split(",")
-      .map(tag => tag.trim())
-      .filter(Boolean),
-});
+  if (!url || !title) return;
 
-      onClose(); 
-    }
-  };
+  console.log("TAGS BEFORE SAVE:", tags);
+
+  onSave({
+    url,
+    title,
+    favicon,
+    tags,
+  });
+
+  onClose();
+};
 
   if (!isOpen) return null;
 
