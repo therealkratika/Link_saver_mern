@@ -91,32 +91,27 @@ export function Dashboard({ showToast }) {
       console.error(err);
     }
   };
-  const handleSaveLink = async (linkData) => {
+const handleSaveLink = async (linkData) => {
 
   try {
 
     let validatedUrl = linkData.url.trim();
+
     if (
       !validatedUrl.startsWith("http://") &&
       !validatedUrl.startsWith("https://")
     ) {
       validatedUrl = `https://${validatedUrl}`;
     }
+
     new URL(validatedUrl);
 
-    const formattedTags =
-  typeof linkData.tags === "string"
-    ? linkData.tags
-        .split(",")
-        .map(tag => tag.trim())
-        .filter(Boolean)
-    : [];
+    const safeData = {
+      ...linkData,
+      url: validatedUrl,
+    };
 
-const safeData = {
-  ...linkData,
-  url: validatedUrl,
-  tags: formattedTags,
-};
+    console.log("SAFE DATA:", safeData);
 
     if (editingLink) {
 
@@ -133,17 +128,22 @@ const safeData = {
         )
       );
 
-      showToast('Link updated successfully');
+      showToast("Link updated successfully");
 
       setEditingLink(null);
 
     } else {
 
-      const res = await LinkSDK.createLink(safeData);
+      const res = await LinkSDK.createLink(
+        safeData
+      );
 
-      setLinks(prev => [res.data, ...prev]);
+      setLinks(prev => [
+        res.data,
+        ...prev
+      ]);
 
-      showToast('New link saved');
+      showToast("New link saved");
     }
 
     setIsModalOpen(false);
@@ -152,7 +152,10 @@ const safeData = {
 
     console.error(err);
 
-    showToast("Invalid URL");
+    showToast(
+      err?.response?.data?.msg ||
+      "Invalid URL"
+    );
   }
 };
   const allTags = useMemo(() => {

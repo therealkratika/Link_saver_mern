@@ -35,19 +35,44 @@ exports.getLinks = async (req, res) => {
     sendError(res, err);
   }
 };
-
 exports.createLink = async (req, res) => {
-  const validationError = validateBody(req.body);
-  if (validationError) return sendError(res, validationError, 400);
+  const validationError =
+    validateBody(req.body);
 
+  if (validationError) {
+    return sendError(
+      res,
+      validationError,
+      400
+    );
+  }
   try {
-    const sanitizedData = sanitizeLinkData(req.body);
+    const sanitizedData =
+      sanitizeLinkData(req.body);
+
+    const existingLink =
+      await Link.findOne({
+        url: sanitizedData.url,
+        user: req.user.id,
+      });
+
+    if (existingLink) {
+      return sendError(
+        res,
+        "Link already exists",
+        400
+      );
+    }
+
     const link = await Link.create({
       ...sanitizedData,
       user: req.user.id,
     });
+
     res.json(link);
+
   } catch (err) {
+
     sendError(res, err);
   }
 };

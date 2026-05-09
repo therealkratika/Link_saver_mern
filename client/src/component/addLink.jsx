@@ -13,7 +13,7 @@ export function AddLinkModal({ isOpen, onClose, onSave, editLink }) {
       setUrl(editLink.url || '');
       setTitle(editLink.title || '');
       setFavicon(editLink.favicon || '');
-      setTags(editLink.tags || []); // ✅ FIX
+      setTags(editLink.tags || []); 
     } else {
       setUrl('');
       setTitle('');
