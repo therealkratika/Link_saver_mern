@@ -104,10 +104,19 @@ export function Dashboard({ showToast }) {
     }
     new URL(validatedUrl);
 
-    const safeData = {
-      ...linkData,
-      url: validatedUrl,
-    };
+    const formattedTags =
+  typeof linkData.tags === "string"
+    ? linkData.tags
+        .split(",")
+        .map(tag => tag.trim())
+        .filter(Boolean)
+    : [];
+
+const safeData = {
+  ...linkData,
+  url: validatedUrl,
+  tags: formattedTags,
+};
 
     if (editingLink) {
 

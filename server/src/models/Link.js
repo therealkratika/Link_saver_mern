@@ -9,7 +9,9 @@ const linkSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  tags: [String],
+  tags: [{
+  type: String
+}],
 
   isFavorite: {
     type: Boolean,
