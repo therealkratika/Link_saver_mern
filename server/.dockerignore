@@ -1,8 +1,8 @@
 node_modules
 .git
 .env
-.env.*
-npm-debug.log
-coverage
+.env.local
 dist
+coverage
+npm-debug.log
 Dockerfile
