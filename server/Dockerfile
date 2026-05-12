@@ -6,7 +6,12 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY . .
+COPY controllers ./controllers
+COPY models ./models
+COPY routes ./routes
+COPY middleware ./middleware
+COPY config ./config
+COPY index.js ./
 
 RUN chown -R node:node /app
 
