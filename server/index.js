@@ -11,6 +11,7 @@ dotenv.config();
 connectDB();
 
 const app = express();
+app.disable("x-powered-by");
 app.use(cors({
   origin: "https://link-saver-mern-914j.onrender.com",
   credentials: true
