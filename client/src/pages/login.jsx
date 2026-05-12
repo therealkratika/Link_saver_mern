@@ -13,7 +13,7 @@ export function LoginPage() {
     try {
       await AuthSDK.login({ email, password }); 
       navigate("/dashboard"); 
-      window.location.reload();
+      globalThis.location.reload();
     } catch (err) {
       alert(err.msg || "Login failed"); 
     }

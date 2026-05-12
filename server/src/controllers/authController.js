@@ -41,8 +41,6 @@ const signup = async (req, res) => {
   try {
     const existingUser = await User.findOne({ email: sanitizedEmail });
     if (existingUser) {
-      // Use generic message to prevent account enumeration if required, 
-      // but "User already exists" is standard for signup.
       return res.status(400).json({ msg: "User already exists" });
     }
 
@@ -63,7 +61,7 @@ const signup = async (req, res) => {
       msg: "User registered. Please check your email to verify your account.",
     });
   } catch (err) {
-    return res.status(500).json({ msg: "An internal server error occurred" });
+    return res.status(500).json({ msg: "An internal server error occurred", error: err.message });
   }
 };
 
@@ -78,8 +76,6 @@ const login = async (req, res) => {
 
   try {
     const user = await User.findOne({ email: sanitizedEmail });
-    
-    // Security: Use same generic message for non-existent user and wrong password
     const isMatch = user ? await bcrypt.compare(password, user.password) : false;
 
     if (!user || !isMatch) {
@@ -101,7 +97,7 @@ const login = async (req, res) => {
       },
     });
   } catch (err) {
-    return res.status(500).json({ msg: "An internal server error occurred" });
+    return res.status(500).json({ msg: "An internal server error occurred" ,error: err.message  });
   }
 };
 
@@ -123,7 +119,7 @@ const verifyEmail = async (req, res) => {
 
     return res.json({ msg: "Email verified successfully" });
   } catch (err) {
-    return res.status(400).json({ msg: "Invalid or expired token" });
+    return res.status(400).json({ msg: "Invalid or expired token", error: err.message });
   }
 };
 
@@ -137,8 +133,6 @@ const forgotPassword = async (req, res) => {
     const { email } = req.body;
     const sanitizedEmail = email.trim().toLowerCase();
     const user = await User.findOne({ email: sanitizedEmail });
-
-    // Security: Don't reveal if a user exists or not
     if (user) {
       const resetToken = signToken({ id: user._id }, "1h");
       await sendResetPasswordEmail(user.email, resetToken);
@@ -146,7 +140,7 @@ const forgotPassword = async (req, res) => {
 
     return res.json({ msg: "If an account exists with that email, a reset link has been sent." });
   } catch (err) {
-    return res.status(500).json({ msg: "An internal server error occurred" });
+    return res.status(500).json({ msg: "An internal server error occurred", error: err.message });
   }
 };
 
@@ -172,7 +166,7 @@ const resetPassword = async (req, res) => {
 
     return res.json({ msg: "Password reset successful" });
   } catch (err) {
-    return res.status(400).json({ msg: "Invalid or expired token" });
+    return res.status(400).json({ msg: "Invalid or expired token", error: err.message });
   }
 };
 

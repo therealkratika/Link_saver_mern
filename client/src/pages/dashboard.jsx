@@ -44,7 +44,7 @@ export function Dashboard({ showToast }) {
   const handleLogout = () => {
     AuthSDK.logout();
     navigate("/login");
-    window.location.reload();
+    globalThis.location.reload();
   };
 
   const handleToggleFavorite = async (id) => {
@@ -395,3 +395,7 @@ export function Dashboard({ showToast }) {
     </div>
   );
 }
+const propTypes = {
+  showToast: PropTypes.func.isRequired,
+};
+Dashboard.propTypes = propTypes;

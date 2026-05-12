@@ -58,10 +58,12 @@ export function Sidebar({
   return (
     <>
       {isOpen && onClose && (
-        <div
-          className="fixed inset-0 bg-black/50 z-40 md:hidden"
-          onClick={onClose}
-        />
+       <button
+  type="button"
+  aria-label="Close sidebar overlay"
+  className="fixed inset-0 bg-black/50 z-40 md:hidden"
+  onClick={onClose}
+/>
       )}
 
       <aside className={`w-64 h-screen bg-white border-r border-gray-200 flex flex-col fixed md:static z-40 transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>

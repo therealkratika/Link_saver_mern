@@ -2,13 +2,13 @@ import api from "./axios";
 
 const validateId = (id) => {
   if (!id || typeof id !== "string") {
-    throw new Error("Invalid link ID.");
+    throw new TypeError("Invalid link ID.");
   }
 
   const safePattern = /^[a-zA-Z0-9_-]+$/;
 
   if (!safePattern.test(id)) {
-    throw new Error("Invalid link ID format.");
+    throw new TypeError("Invalid link ID format.");
   }
 
   return encodeURIComponent(id);
@@ -20,14 +20,14 @@ const buildLinkUrl = (id) => {
 
 const validateLinkData = (data) => {
   if (!data || typeof data !== "object" || Array.isArray(data)) {
-    throw new Error("Invalid payload.");
+    throw new TypeError("Invalid payload.");
   }
 
   const sanitizedData = {};
 
   if ("url" in data) {
     if (typeof data.url !== "string") {
-      throw new Error("Invalid URL.");
+      throw new TypeError("Invalid URL.");
     }
 
     sanitizedData.url = data.url.trim();
@@ -35,7 +35,7 @@ const validateLinkData = (data) => {
 
   if ("title" in data) {
     if (typeof data.title !== "string") {
-      throw new Error("Invalid title.");
+      throw new TypeError("Invalid title.");
     }
 
     sanitizedData.title = data.title.trim();
@@ -46,7 +46,7 @@ const validateLinkData = (data) => {
       !Array.isArray(data.tags) ||
       !data.tags.every((tag) => typeof tag === "string")
     ) {
-      throw new Error("Invalid tags.");
+      throw new TypeError("Invalid tags.");
     }
 
     sanitizedData.tags = data.tags.map((tag) => tag.trim());
