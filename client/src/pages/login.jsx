@@ -38,6 +38,7 @@ export function LoginPage() {
                 Email Address
               </label>
               <input
+              htmlFor='email'
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -48,7 +49,10 @@ export function LoginPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label 
+              htmlFor='password'
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                
                 Password
               </label>
               <input

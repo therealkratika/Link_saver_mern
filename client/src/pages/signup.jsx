@@ -104,7 +104,9 @@ export function SignupPage() {
 
             <div>
 
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label 
+              htmlFor='name'
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Full Name
               </label>
 
@@ -121,7 +123,9 @@ export function SignupPage() {
 
             <div>
 
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label 
+              htmlFor='email'
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Email Address
               </label>
 
@@ -138,7 +142,9 @@ export function SignupPage() {
 
             <div>
 
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label 
+              htmlFor='password'
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Password
               </label>
 
@@ -155,7 +161,9 @@ export function SignupPage() {
 
             <div>
 
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label 
+              htmlFor='confirmPassword'
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Confirm Password
               </label>
 

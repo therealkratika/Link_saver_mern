@@ -170,8 +170,7 @@ export function Dashboard({ showToast }) {
       link.tags?.forEach(tag => tagSet.add(tag))
     );
 
-    return Array.from(tagSet).sort();
-
+return Array.from(tagSet).sort((a, b) => a.localeCompare(b));
   }, [links]);
 
   const filteredLinks = useMemo(() => {
