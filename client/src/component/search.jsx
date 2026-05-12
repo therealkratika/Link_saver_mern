@@ -31,3 +31,8 @@ export function SearchBar({ value, onChange, onFilterClick }) {
     </div>
   );
 }
+SearchBar.propTypes = {
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onFilterClick: PropTypes.func,
+};

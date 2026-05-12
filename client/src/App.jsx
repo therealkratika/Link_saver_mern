@@ -12,8 +12,7 @@ export default function App() {
 const token = localStorage.getItem("token");
 
 const isAuthenticated =
-  token &&
-  token.split(".").length === 3;
+  token?.split(".")?.length === 3;
   
   useEffect(() => {
     if (notification) {

@@ -31,8 +31,8 @@ export function AddLinkModal({ isOpen, onClose, onSave, editLink }) {
         setTitle(domain.replace('www.', ''));
       }
 
-    } catch (error) {
-      console.error('Invalid URL');
+    } catch {
+      setFavicon(''); 
     }
     setIsLoading(false);
   };
@@ -44,7 +44,7 @@ export function AddLinkModal({ isOpen, onClose, onSave, editLink }) {
       new URL(newUrl);
       fetchPreview(newUrl);
     } catch {
-      
+      setFavicon('');
     }
   };
 

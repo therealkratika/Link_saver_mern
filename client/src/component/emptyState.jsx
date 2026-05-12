@@ -1,7 +1,6 @@
 import React from 'react';
 
 export function EmptyState({ title, description, onAddLink, icon = 'inbox' }) {
-  // SVG paths for Inbox and Link icons
   const icons = {
     inbox: (
       <svg width="48" height="48" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -19,20 +18,15 @@ export function EmptyState({ title, description, onAddLink, icon = 'inbox' }) {
 
   return (
     <div className="flex flex-col items-center justify-center py-20 px-4 text-center">
-      {/* Icon Wrapper */}
       <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-6 text-gray-400">
         {icons[icon] || icons.inbox}
       </div>
-
-      {/* Content */}
       <h3 className="text-2xl font-bold text-gray-900 mb-2">
         {title}
       </h3>
       <p className="text-gray-500 max-w-sm mb-8 leading-relaxed">
         {description}
       </p>
-
-      {/* Action Button */}
       {onAddLink && (
         <button
           onClick={onAddLink}
@@ -47,3 +41,9 @@ export function EmptyState({ title, description, onAddLink, icon = 'inbox' }) {
     </div>
   );
 }
+EmptyState.propTypes = {
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  onAddLink: PropTypes.func,
+  icon: PropTypes.string,
+};

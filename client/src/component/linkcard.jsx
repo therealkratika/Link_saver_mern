@@ -26,7 +26,7 @@ const handleOpen = () => {
     } else {
       showToast?.("Invalid URL protocol");
     }
-  } catch (err) {
+  } catch {
     showToast?.("Invalid URL");
   }
 };
@@ -56,21 +56,18 @@ const handleOpen = () => {
       e.preventDefault();
       handleOpen();
     }else{
-
+      return;
     }
   };
 
   return (
-    <div
-      onClick={handleOpen}
-      onKeyDown={handleKeyDown}
-      role="button"
-      tabIndex={0}
-      aria-label={`Open ${link.title}`}
-      className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm hover:shadow-md transition-all cursor-pointer group"
-    >
-      {/* Top Section */}
-      <div className="flex items-start gap-3 mb-3">
+    <button
+  type="button"
+  onClick={handleOpen}
+  onKeyDown={handleKeyDown}
+  aria-label={`Open ${link.title}`}
+  className="w-full text-left bg-white rounded-xl border border-gray-200 p-4 shadow-sm hover:shadow-md transition-all cursor-pointer group"
+>      <div className="flex items-start gap-3 mb-3">
         <img
           src={link.favicon || getFavicon()}
           alt={`${link.title} icon`}
@@ -101,8 +98,6 @@ const handleOpen = () => {
           </svg>
         </button>
       </div>
-
-      {/* Tags */}
       {link.tags?.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-3">
           {link.tags.map((tag) => (
@@ -112,8 +107,6 @@ const handleOpen = () => {
           ))}
         </div>
       )}
-
-      {/* Bottom Actions */}
       <div className="flex items-center justify-between pt-3 border-t border-gray-100">
         <span className="text-xs text-gray-400 font-medium">
           {formatDate(link.createdAt)}
@@ -164,7 +157,7 @@ const handleOpen = () => {
           </button>
         </div>
       </div>
-    </div>
+    </button>
   );
 }
 
