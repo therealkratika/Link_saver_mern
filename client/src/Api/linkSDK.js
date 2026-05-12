@@ -11,15 +11,34 @@ const validateId = (id) => {
 
   return encodeURIComponent(id);
 };
+const validateLinkData = (data) => {
+  if (!data || typeof data !== 'object' || Array.isArray(data)) {
+    throw new Error("Invalid payload for link data. Expected an object.");
+  }
+  if (data.url && typeof data.url !== 'string') {
+    throw new Error("Invalid URL: URL must be a string.");
+  }
+  if (data.title && typeof data.title !== 'string') {
+    throw new Error("Invalid title: Title must be a string.");
+  }
+  if (data.tags && !Array.isArray(data.tags)) {
+    throw new Error("Invalid tags: Tags must be an array of strings.");
+  }
+  return data;
+}
 
 export const LinkSDK = {
   getLinks: () => api.get("/links"),
 
-  createLink: (data) => api.post("/links", data),
+createLink: (data) => {
+  const safeData = validateLinkData(data);
 
+    return api.post("/links", safeData);
+  },
   updateLink: (id, data) => {
     const safeId = validateId(id);
-    return api.put(`/links/${safeId}`, data);
+    const safeData = validateLinkData(data);
+    return api.put(`/links/${safeId}`, safeData);
   },
 
   deleteLink: (id) => {

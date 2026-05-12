@@ -16,22 +16,20 @@ export function LinkCard({ link, onToggleFavorite, onEdit, onDelete, showToast }
       });
   };
 
-  const handleOpen = () => {
-    try {
-      const parsedUrl = new URL(link.url);
-      const isHttp = parsedUrl.protocol === "http:" || parsedUrl.protocol === "https:";
+const handleOpen = () => {
+  try {
+    const parsedUrl = new URL(link.url);
+        const isSafeProtocol = parsedUrl.protocol === "http:" || parsedUrl.protocol === "https:";
 
-      if (isHttp) {
-        // use noopener noreferrer for security against tab-napping
-        window.open(link.url, "_blank", "noopener,noreferrer");
-      } else if (showToast) {
-        showToast("Invalid URL protocol");
-      }
-    } catch (err) {
-      if (showToast) showToast("Invalid URL");
+    if (isSafeProtocol) {
+      window.open(parsedUrl.href, "_blank", "noopener,noreferrer");
+    } else {
+      showToast?.("Invalid URL protocol");
     }
-  };
-
+  } catch (err) {
+    showToast?.("Invalid URL");
+  }
+};
   const formatDate = (date) => {
     if (!date) return '';
     const d = new Date(date);
@@ -53,14 +51,12 @@ export function LinkCard({ link, onToggleFavorite, onEdit, onDelete, showToast }
       return 'https://via.placeholder.com/32';
     }
   };
-
-  // Keyboard accessibility for the card
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       handleOpen();
     }else{
-      
+
     }
   };
 
