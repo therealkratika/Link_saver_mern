@@ -15,12 +15,12 @@ services:
     ports:
       - "5000:5000"
     environment:
-      EMAIL_PASS : kbktlazzkdukslso
-      EMAIL_USER : therealkratikagupta@gmail.com
-      MONGO_URI : mongodb+srv://therealkratikagupta_db_user:aS7BUv4bT0r0cRc3@cluster0.bva2ytg.mongodb.net/
-      JWT_SECRET : defa1925799c07918b1b18494bffeef6f048b31aa349c9a36d8ff3f537d89835
-      BASE_URL : https://link-saver-mern.onrender.com
-      RESEND_API_KEY: re_9Xew44NT_HQkPUp2tw4uxixSZriFPYaM3
+      EMAIL_PASS : email_password_here
+      EMAIL_USER : email_user_here
+      MONGO_URI : mongodb://mongo:27017/link_saver
+      JWT_SECRET : your_jwt_secret_here
+      BASE_URL : bakend_url_here
+      RESEND_API_KEY: resend_api_key_here
       PORT : 5000
 
     depends_on:

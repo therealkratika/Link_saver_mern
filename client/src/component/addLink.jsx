@@ -82,16 +82,12 @@ const handleSubmit = (e) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       
-      <div className="absolute inset-0 bg-gray-900/50 backdrop-blur-sm"
-        onClick={onClose}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => {
-       if (e.key === "Enter" || e.key === " ") {
-         onClose();
-      }
-    }}
-  />
+     <button
+  type="button"
+  aria-label="Close modal"
+  className="absolute inset-0 bg-gray-900/50 backdrop-blur-sm cursor-default"
+  onClick={onClose}
+/>
       
       <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 overflow-hidden">
         

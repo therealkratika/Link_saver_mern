@@ -1,36 +1,39 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export function LinkCard({ link, onToggleFavorite, onEdit, onDelete, showToast }) {
-
+  
   const handleCopy = (e) => {
     e.stopPropagation();
-    navigator.clipboard.writeText(link.url);
-    if (showToast) showToast('Link copied!');
+    if (!link.url) return;
+    
+    navigator.clipboard.writeText(link.url)
+      .then(() => {
+        if (showToast) showToast('Link copied!');
+      })
+      .catch(() => {
+        if (showToast) showToast('Failed to copy');
+      });
   };
 
- const handleOpen = () => {
-  try {
-    const parsedUrl = new URL(link.url);
+  const handleOpen = () => {
+    try {
+      const parsedUrl = new URL(link.url);
+      const isHttp = parsedUrl.protocol === "http:" || parsedUrl.protocol === "https:";
 
-    if (
-      parsedUrl.protocol === "http:" ||
-      parsedUrl.protocol === "https:"
-    ) {
-      window.open(link.url, "_blank", "noopener,noreferrer");
-    } else {
-      if (showToast) {
-        showToast("Invalid URL");
+      if (isHttp) {
+        // use noopener noreferrer for security against tab-napping
+        window.open(link.url, "_blank", "noopener,noreferrer");
+      } else if (showToast) {
+        showToast("Invalid URL protocol");
       }
+    } catch (err) {
+      if (showToast) showToast("Invalid URL");
     }
-
-  } catch (err) {
-    if (showToast) {
-      showToast("Invalid URL");
-    }
-  }
-};
+  };
 
   const formatDate = (date) => {
+    if (!date) return '';
     const d = new Date(date);
     const now = new Date();
     const diff = now.getTime() - d.getTime();
@@ -38,11 +41,10 @@ export function LinkCard({ link, onToggleFavorite, onEdit, onDelete, showToast }
 
     if (days === 0) return 'Today';
     if (days === 1) return 'Yesterday';
-    if (days < 7) return `${days} days ago`;
+    if (days < 7 && days > 0) return `${days} days ago`;
     return d.toLocaleDateString();
   };
 
-  // ✅ Generate favicon dynamically
   const getFavicon = () => {
     try {
       const domain = new URL(link.url).hostname;
@@ -52,16 +54,30 @@ export function LinkCard({ link, onToggleFavorite, onEdit, onDelete, showToast }
     }
   };
 
+  // Keyboard accessibility for the card
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleOpen();
+    }else{
+      
+    }
+  };
+
   return (
     <div
       onClick={handleOpen}
+      onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={0}
+      aria-label={`Open ${link.title}`}
       className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm hover:shadow-md transition-all cursor-pointer group"
     >
       {/* Top Section */}
       <div className="flex items-start gap-3 mb-3">
         <img
           src={link.favicon || getFavicon()}
-          alt=""
+          alt={`${link.title} icon`}
           className="w-6 h-6 rounded mt-0.5"
           onError={(e) => {
             e.target.src = 'https://via.placeholder.com/32';
@@ -76,13 +92,15 @@ export function LinkCard({ link, onToggleFavorite, onEdit, onDelete, showToast }
         </div>
 
         <button
+          type="button"
           onClick={(e) => {
             e.stopPropagation();
-            onToggleFavorite(link._id); // ✅ FIXED
+            onToggleFavorite(link._id);
           }}
+          aria-label={link.isFavorite ? "Remove from favorites" : "Add to favorites"}
           className={`flex-shrink-0 transition-colors ${link.isFavorite ? 'text-yellow-500' : 'text-gray-300'}`}
         >
-          <svg width="20" height="20" fill={link.isFavorite ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+          <svg width="20" height="20" fill={link.isFavorite ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
           </svg>
         </button>
@@ -91,8 +109,8 @@ export function LinkCard({ link, onToggleFavorite, onEdit, onDelete, showToast }
       {/* Tags */}
       {link.tags?.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-3">
-          {link.tags.map((tag, index) => (
-            <span key={index} className="px-2.5 py-0.5 text-xs font-medium bg-blue-50 text-blue-600 rounded-full border border-blue-100">
+          {link.tags.map((tag) => (
+            <span key={tag} className="px-2.5 py-0.5 text-xs font-medium bg-blue-50 text-blue-600 rounded-full border border-blue-100">
               #{tag}
             </span>
           ))}
@@ -106,52 +124,66 @@ export function LinkCard({ link, onToggleFavorite, onEdit, onDelete, showToast }
         </span>
 
         <div className="flex items-center gap-1">
-          
-          {/* Copy */}
           <button
+            type="button"
             onClick={handleCopy}
             className="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded transition-all"
-            title="Copy"
+            title="Copy URL"
           >
-            <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
               <rect x="9" y="9" width="13" height="13" rx="2"></rect>
               <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
             </svg>
           </button>
 
-          {/* Edit */}
           <button
+            type="button"
             onClick={(e) => {
               e.stopPropagation();
-              onEdit(link._id); // ✅ FIXED
+              onEdit(link._id);
             }}
             className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-gray-100 rounded transition-all"
-            title="Edit"
+            title="Edit Link"
           >
-            <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path>
               <path d="M18.5 2.5a2.121 2.121 0 113 3L12 15l-4 1 1-4 9.5-9.5z"></path>
             </svg>
           </button>
 
-          {/* Delete */}
           <button
+            type="button"
             onClick={(e) => {
               e.stopPropagation();
-              onDelete(link._id); // ✅ FIXED
+              onDelete(link._id);
             }}
             className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-gray-100 rounded transition-all"
-            title="Delete"
+            title="Delete Link"
           >
-            <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M3 6h18"></path>
               <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"></path>
               <path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"></path>
             </svg>
           </button>
-
         </div>
       </div>
     </div>
   );
 }
+
+LinkCard.propTypes = {
+  link: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    title: PropTypes.string,
+    favicon: PropTypes.string,
+    isFavorite: PropTypes.bool,
+    tags: PropTypes.arrayOf(PropTypes.string),
+    createdAt: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
+  }).isRequired,
+  onToggleFavorite: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  showToast: PropTypes.func,
+};
