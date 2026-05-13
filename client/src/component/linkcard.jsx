@@ -64,10 +64,11 @@ export function LinkCard({ link, onToggleFavorite, onEdit, onDelete, showToast }
   };
 
   return (
-    <button
-      type="button"
+    <div
       onClick={handleOpen}
       onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={0}
       aria-label={`Open ${link.title}`}
       className="w-full text-left bg-white rounded-xl border border-gray-200 p-4 shadow-sm hover:shadow-md transition-all cursor-pointer group focus:outline-none focus:ring-2 focus:ring-violet-500"
     >
@@ -164,7 +165,7 @@ export function LinkCard({ link, onToggleFavorite, onEdit, onDelete, showToast }
           </button>
         </div>
       </div>
-    </button>
+    </div>
   );
 }
 
