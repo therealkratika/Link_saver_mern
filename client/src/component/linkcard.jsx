@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+const LOCAL_FALLBACK_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNhYmFkYmQiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSIyIiB5PSIyIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHJ4PSI1IiByeT0iNSI+PC9yZWN0Pjwvc3ZnPg==';
 
 export function LinkCard({ link, onToggleFavorite, onEdit, onDelete, showToast }) {
   
@@ -16,20 +17,22 @@ export function LinkCard({ link, onToggleFavorite, onEdit, onDelete, showToast }
       });
   };
 
-const handleOpen = () => {
-  try {
-    const parsedUrl = new URL(link.url);
-        const isSafeProtocol = parsedUrl.protocol === "http:" || parsedUrl.protocol === "https:";
+  const handleOpen = () => {
+    try {
+      const cleanUrl = link.url.trim(); 
+      const parsedUrl = new URL(cleanUrl);
+      const isSafeProtocol = parsedUrl.protocol === "http:" || parsedUrl.protocol === "https:";
 
-    if (isSafeProtocol) {
-      window.open(parsedUrl.href, "_blank", "noopener,noreferrer");
-    } else {
-      showToast?.("Invalid URL protocol");
+      if (isSafeProtocol) {
+        window.open(parsedUrl.href, "_blank", "noopener,noreferrer");
+      } else {
+        showToast?.("Invalid URL protocol");
+      }
+    } catch {
+      showToast?.("Invalid URL");
     }
-  } catch {
-    showToast?.("Invalid URL");
-  }
-};
+  };
+
   const formatDate = (date) => {
     if (!date) return '';
     const d = new Date(date);
@@ -45,41 +48,43 @@ const handleOpen = () => {
 
   const getFavicon = () => {
     try {
+      if (!link.url) return LOCAL_FALLBACK_IMAGE;
       const domain = new URL(link.url).hostname;
       return `https://icon.horse/icon/${domain}`;
     } catch {
-      return 'https://via.placeholder.com/32';
+      return LOCAL_FALLBACK_IMAGE;
     }
   };
+
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       handleOpen();
-    }else{
-      return;
     }
   };
 
   return (
     <button
-  type="button"
-  onClick={handleOpen}
-  onKeyDown={handleKeyDown}
-  aria-label={`Open ${link.title}`}
-  className="w-full text-left bg-white rounded-xl border border-gray-200 p-4 shadow-sm hover:shadow-md transition-all cursor-pointer group"
->      <div className="flex items-start gap-3 mb-3">
+      type="button"
+      onClick={handleOpen}
+      onKeyDown={handleKeyDown}
+      aria-label={`Open ${link.title}`}
+      className="w-full text-left bg-white rounded-xl border border-gray-200 p-4 shadow-sm hover:shadow-md transition-all cursor-pointer group focus:outline-none focus:ring-2 focus:ring-violet-500"
+    >
+      <div className="flex items-start gap-3 mb-3">
         <img
           src={link.favicon || getFavicon()}
-          alt={`${link.title} icon`}
-          className="w-6 h-6 rounded mt-0.5"
+          alt=""
+          className="w-6 h-6 rounded mt-0.5 object-contain"
           onError={(e) => {
-            e.target.src = 'https://via.placeholder.com/32';
+            e.target.onerror = null; 
+            e.target.src = LOCAL_FALLBACK_IMAGE;
           }}
         />
 
         <div className="flex-1 min-w-0">
-          <h3 className="font-medium text-gray-900 truncate mb-1 group-hover:text-blue-600 transition-colors">
-            {link.title}
+          <h3 className="font-medium text-gray-900 truncate mb-1 group-hover:text-violet-600 transition-colors">
+            {link.title || 'Untitled Link'}
           </h3>
           <p className="text-sm text-gray-500 truncate">{link.url}</p>
         </div>
@@ -91,22 +96,24 @@ const handleOpen = () => {
             onToggleFavorite(link._id);
           }}
           aria-label={link.isFavorite ? "Remove from favorites" : "Add to favorites"}
-          className={`flex-shrink-0 transition-colors ${link.isFavorite ? 'text-yellow-500' : 'text-gray-300'}`}
+          className={`flex-shrink-0 transition-colors ${link.isFavorite ? 'text-yellow-500' : 'text-gray-300 hover:text-yellow-400'}`}
         >
           <svg width="20" height="20" fill={link.isFavorite ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
           </svg>
         </button>
       </div>
+
       {link.tags?.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-3">
           {link.tags.map((tag) => (
-            <span key={tag} className="px-2.5 py-0.5 text-xs font-medium bg-blue-50 text-blue-600 rounded-full border border-blue-100">
+            <span key={tag} className="px-2.5 py-0.5 text-xs font-medium bg-violet-50 text-violet-600 rounded-full border border-violet-100">
               #{tag}
             </span>
           ))}
         </div>
       )}
+
       <div className="flex items-center justify-between pt-3 border-t border-gray-100">
         <span className="text-xs text-gray-400 font-medium">
           {formatDate(link.createdAt)}
