@@ -6,10 +6,7 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY src ./src
-COPY public ./public
-COPY vite.config.js ./
-COPY index.html ./
+COPY . .
 
 RUN chown -R node:node /app
 
