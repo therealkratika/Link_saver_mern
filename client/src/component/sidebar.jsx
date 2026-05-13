@@ -148,10 +148,3 @@ export function Sidebar({
     </>
   );
 }
-Sidebar.propTypes = {
-  currentView: PropTypes.string.isRequired,
-  onViewChange: PropTypes.func.isRequired,
-  isOpen: PropTypes.bool,
-  onClose: PropTypes.func,
-  onLogout: PropTypes.func,
-};
