@@ -7,7 +7,7 @@ import { EmptyState } from '../component/emptyState';
 import { SearchBar } from '../component/search';
 import { LinkSDK } from '../Api/linkSDK';
 import { AuthSDK } from '../Api/AuthSDK';
-
+import PropTypes from 'prop-types';
 export function Dashboard({ showToast }) {
 
   const navigate = useNavigate();

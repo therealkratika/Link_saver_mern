@@ -1,5 +1,5 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 export function EmptyState({ title, description, onAddLink, icon = 'inbox' }) {
   const icons = {
     inbox: (
