@@ -9,7 +9,7 @@ RUN npm install
 COPY controllers ./controllers
 COPY models ./models
 COPY routes ./routes
-COPY middleware ./middleware
+COPY middleware ./authMiddleware
 COPY config ./config
 COPY index.js ./
 
