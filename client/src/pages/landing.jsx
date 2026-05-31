@@ -3,189 +3,165 @@ import { useNavigate } from 'react-router-dom';
 
 export function LandingPage() {
   const navigate = useNavigate();
-  const features = [
-    {
-      icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>,
-      title: 'Lightning Fast',
-      description: 'Save links instantly with auto-preview and smart metadata extraction',
-    },
-    {
-      icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2z"/><path d="M7 7h.01"/></svg>,
-      title: 'Smart Organization',
-      description: 'Organize with tags, favorites, and powerful search capabilities',
-    },
-    {
-      icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>,
-      title: 'Quick Search',
-      description: 'Find any link in seconds with our intelligent search engine',
-    },
-    {
-      icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
-      title: 'Favorites',
-      description: 'Mark important links as favorites for quick access anytime',
-    },
-    {
-      icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>,
-      title: 'Dark Mode',
-      description: 'Beautiful light and dark themes for comfortable browsing',
-    },
-    {
-      icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
-      title: 'Secure & Private',
-      description: 'Your data is encrypted and stored securely in the cloud',
-    },
-  ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 font-sans">
-      <nav className="border-b border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-              </div>
-              <span className="font-bold text-xl text-gray-900 dark:text-white">LinkSaver</span>
+    <div className="min-h-screen bg-[#0A0C10] text-slate-100 font-sans selection:bg-emerald-500/20 selection:text-emerald-400">
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="absolute -top-[20%] left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-emerald-500/10 blur-[120px] rounded-full" />
+        <div className="absolute top-[40%] -right-[10%] w-[600px] h-[600px] bg-indigo-500/05 blur-[150px] rounded-full" />
+      </div>
+
+      <nav className="relative z-50 border-b border-white/[0.08] bg-[#0A0C10]/80 backdrop-blur-xl sticky top-0">
+        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-slate-950 font-bold shadow-lg shadow-emerald-500/20">
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+              </svg>
             </div>
+            <span className="font-semibold text-lg tracking-tight text-white">LinkSaver</span>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={() => navigate("/login")}
+              className="text-sm text-slate-400 hover:text-white transition-colors hidden sm:block"
+            >
+              Sign In
+            </button>
             <button
-              onClick={()=>navigate("/login")}
-              className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
+              onClick={() => navigate("/login")}
+              className="px-4 py-2 bg-white text-slate-950 hover:bg-slate-200 text-sm font-medium rounded-lg transition-all duration-200 active:scale-[0.98]"
             >
               Get Started
             </button>
           </div>
         </div>
       </nav>
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 md:pt-32 md:pb-24">
-        <div className="text-center transform transition-all duration-700 ease-out translate-y-0 opacity-100">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full mb-8">
-            <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <span className="font-medium">The smarter way to save links</span>
-          </div>
 
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
-            Save, Organize & Find
-            <br />
-            <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-              Your Links Effortlessly
-            </span>
-          </h1>
+      <section className="relative z-10 max-w-5xl mx-auto px-6 pt-24 pb-16 text-center">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-emerald-500/20 bg-emerald-500/10 text-emerald-400 text-xs font-medium mb-8">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          LinkSaver v2.0 is live
+        </div>
 
-          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-10">
-            The perfect bookmark manager for students and developers. Keep all your important resources organized in one beautiful place.
-          </p>
+        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6 leading-[1.1]">
+          Your digital workspace for <br className="hidden sm:block" />
+          <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-indigo-300 bg-clip-text text-transparent">
+            bookmarks that matter.
+          </span>
+        </h1>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button
-              onClick={()=>navigate("/login")}
-              className="px-8 py-4 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl text-lg font-medium w-full sm:w-auto"
-            >
-              Start Saving Links
-            </button>
-            <button className="px-8 py-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-2 border-gray-200 dark:border-gray-700 rounded-xl hover:border-blue-600 dark:hover:border-blue-500 transition-all text-lg font-medium w-full sm:w-auto">
-              View Demo
-            </button>
-          </div>
-          <div className="mt-16 relative opacity-100 translate-y-0 transition-all duration-1000 delay-300">
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-              <div className="bg-gray-100 dark:bg-gray-900 px-4 py-3 flex items-center gap-2 border-b border-gray-200 dark:border-gray-700">
-                <div className="flex gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                  <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                </div>
-                <div className="flex-1 text-center">
-                  <div className="inline-block px-4 py-1 bg-white dark:bg-gray-800 rounded text-sm text-gray-600 dark:text-gray-400">
-                    linksaver.app
-                  </div>
-                </div>
+        <p className="text-base sm:text-lg text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
+          Ditch messy browser tabs. Organize research, inspiration, and code snippets into an intelligent, lightning-fast knowledge base.
+        </p>
+
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <button
+            onClick={() => navigate("/login")}
+            className="w-full sm:w-auto px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold rounded-lg transition-all shadow-lg shadow-emerald-500/20 active:scale-[0.98] text-sm"
+          >
+            Start Saving Links — Free
+          </button>
+          <button 
+            className="w-full sm:w-auto px-6 py-3 bg-white/[0.05] hover:bg-white/[0.1] text-slate-300 border border-white/10 rounded-lg transition-all text-sm font-medium"
+          >
+            View Interactive Demo
+          </button>
+        </div>
+
+        {/* Modern App Preview Component */}
+        <div className="mt-16 rounded-xl border border-white/10 bg-[#12151C]/80 backdrop-blur-xl p-3 shadow-2xl shadow-black/80">
+          <div className="bg-[#0A0C10] rounded-lg border border-white/[0.05] p-4 sm:p-6 text-left">
+            {/* Header / Search bar mock */}
+            <div className="flex items-center justify-between pb-4 border-b border-white/[0.08] mb-4 gap-4">
+              <div className="flex items-center gap-2 bg-white/[0.05] border border-white/[0.08] px-3 py-1.5 rounded-md text-xs text-slate-400 flex-1 max-w-xs">
+                <svg className="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                <span>Search links or tags...</span>
+                <span className="ml-auto text-[10px] bg-white/10 px-1.5 py-0.5 rounded text-slate-400">⌘K</span>
               </div>
-              <div className="p-8 grid grid-cols-1 md:grid-cols-3 gap-4">
-                {[1, 2, 3, 4, 5, 6].map((i) => (
-                  <div
-                    key={i}
-                    className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 border border-gray-200 dark:border-gray-600 transition-transform hover:scale-105 duration-300"
-                  >
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-6 h-6 bg-blue-600 rounded"></div>
-                      <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded flex-1"></div>
+              <div className="flex gap-2">
+                <div className="h-7 px-2.5 rounded bg-white/[0.08] border border-white/10 text-[11px] flex items-center text-slate-300">Density View</div>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              {[
+                { title: "Tailwind CSS - Rapidly build modern websites", domain: "tailwindcss.com", tag: "CSS", tagBg: "bg-cyan-500/10 text-cyan-400 border-cyan-500/20" },
+                { title: "Framer Motion: Production-ready animation library for React", domain: "framer.com", tag: "React", tagBg: "bg-purple-500/10 text-purple-400 border-purple-500/20" },
+                { title: "System Design Primer - Github Repository", domain: "github.com", tag: "Architecture", tagBg: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" },
+              ].map((item, idx) => (
+                <div key={idx} className="flex items-center justify-between p-3 rounded-md bg-white/[0.02] border border-white/[0.04] hover:border-white/10 transition-colors">
+                  <div className="flex items-center gap-3 overflow-hidden">
+                    <div className="w-7 h-7 rounded bg-slate-800 flex items-center justify-center text-xs font-mono text-slate-400 flex-shrink-0">
+                      {item.domain[0].toUpperCase()}
                     </div>
-                    <div className="h-2 bg-gray-200 dark:bg-gray-600 rounded mb-2"></div>
-                    <div className="flex gap-1">
-                      <div className="h-5 bg-blue-100 dark:bg-blue-900/30 rounded-full w-12"></div>
-                      <div className="h-5 bg-blue-100 dark:bg-blue-900/30 rounded-full w-16"></div>
+                    <div className="truncate">
+                      <p className="text-xs font-medium text-slate-200 truncate">{item.title}</p>
+                      <p className="text-[11px] text-slate-500 font-mono">{item.domain}</p>
                     </div>
                   </div>
-                ))}
-              </div>
+                  <span className={`text-[10px] px-2 py-0.5 rounded border ${item.tagBg} hidden sm:block flex-shrink-0`}>
+                    {item.tag}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-            Everything you need to
-            <br />
-            manage your links
+
+      <section className="relative z-10 max-w-5xl mx-auto px-6 py-20 border-t border-white/[0.08]">
+        <div className="mb-12">
+          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-white mb-3">
+            Engineered for speed and focus.
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Powerful features designed to make bookmark management effortless and enjoyable
+          <p className="text-slate-400 text-sm sm:text-base max-w-xl">
+            Everything you need from a bookmark manager, minus the bloat.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-            <div
-              key={index}
-              className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all duration-300 group"
-            >
-              <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 text-blue-600 dark:text-blue-400">
-                {feature.icon}
-              </div>
-              <h3 className="font-semibold text-xl text-gray-900 dark:text-white mb-3">
-                {feature.title}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                {feature.description}
-              </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="md:col-span-2 p-6 rounded-xl bg-[#12151C]/60 border border-white/[0.08] relative overflow-hidden group">
+            <div className="mb-6">
+              <span className="text-xs font-mono text-emerald-400 uppercase tracking-widest">01 / Speed</span>
+              <h3 className="text-xl font-semibold text-white mt-1">Command Palette First</h3>
+              <p className="text-slate-400 text-sm mt-2 max-w-md">Filter tags, open saved links, or trigger instant saves straight from your keyboard without touching your mouse.</p>
             </div>
-          ))}
-        </div>
-      </section>
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl p-12 md:p-16 text-center relative overflow-hidden shadow-2xl">
-          <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
-          
-          <div className="relative z-10">
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-              Ready to get organized?
-            </h2>
-            <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-              Join thousands of students and developers who trust LinkSaver to organize their resources
-            </p>
-            <button
-              onClick={()=>navigate("/login")}
-              className="px-10 py-4 bg-white text-blue-600 rounded-xl hover:bg-gray-100 transition-all shadow-lg hover:shadow-xl text-lg font-medium"
-            >
-              Get Started for Free
-            </button>
+            <div className="bg-[#0A0C10] p-3 rounded-lg border border-white/10 font-mono text-xs text-slate-400">
+              <span className="text-emerald-400">&gt;</span> save https://github.com/developer/project <span className="text-slate-600">--tag=dev</span>
+            </div>
+          </div>
+
+          <div className="p-6 rounded-xl bg-[#12151C]/60 border border-white/[0.08]">
+            <span className="text-xs font-mono text-emerald-400 uppercase tracking-widest">02 / Metadata</span>
+            <h3 className="text-xl font-semibold text-white mt-1">Auto-Previews</h3>
+            <p className="text-slate-400 text-sm mt-2">OpenGraph titles, favicons, and descriptions are automatically parsed on URL paste.</p>
+          </div>
+
+          <div className="p-6 rounded-xl bg-[#12151C]/60 border border-white/[0.08]">
+            <span className="text-xs font-mono text-emerald-400 uppercase tracking-widest">03 / Organize</span>
+            <h3 className="text-xl font-semibold text-white mt-1">Smart Tags</h3>
+            <p className="text-slate-400 text-sm mt-2">Filter multi-category resources with keyboard-friendly tag hierarchies.</p>
+          </div>
+
+          <div className="md:col-span-2 p-6 rounded-xl bg-[#12151C]/60 border border-white/[0.08]">
+            <span className="text-xs font-mono text-emerald-400 uppercase tracking-widest">04 / Security</span>
+            <h3 className="text-xl font-semibold text-white mt-1">Private & Encrypted Storage</h3>
+            <p className="text-slate-400 text-sm mt-2">Your collection is your personal knowledge base. Encrypted storage guarantees your saved resources remain completely private.</p>
           </div>
         </div>
       </section>
 
-      <footer className="border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white">
-                <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-              </div>
-              <span className="font-bold text-gray-900 dark:text-white">LinkSaver</span>
-            </div>
-            <p className="text-gray-600 dark:text-gray-400 text-sm">
-              © 2026 LinkSaver. Made with ❤️ for students and developers.
-            </p>
+      <footer className="border-t border-white/[0.08] relative z-10 py-8 text-xs text-slate-500">
+        <div className="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p>© 2026 LinkSaver. Built for developers and researchers.</p>
+          <div className="flex gap-6">
+            <a href="#privacy" className="hover:text-slate-300 transition-colors">Privacy</a>
+            <a href="#terms" className="hover:text-slate-300 transition-colors">Terms</a>
+            <a href="#github" className="hover:text-slate-300 transition-colors">GitHub</a>
           </div>
         </div>
       </footer>
