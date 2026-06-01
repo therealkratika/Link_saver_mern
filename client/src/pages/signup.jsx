@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { AuthSDK } from "../Api/AuthSDK";
 
 export function SignupPage() {
-
   const navigate = useNavigate();
 
   const [name, setName] = useState('');
@@ -12,30 +11,29 @@ export function SignupPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
     if (password !== confirmPassword) {
-
       setMessage("Passwords do not match");
       setMessageType("error");
 
       setTimeout(() => {
         setMessage('');
       }, 3000);
-
       return;
     }
 
-    try {
+    setIsLoading(true);
 
+    try {
       await AuthSDK.signup({
         name,
         email,
         password
       });
-      setMessage("Signup successful! Please verify your email.");
+      setMessage("Account created! Redirecting to login...");
       setMessageType("success");
 
       setTimeout(() => {
@@ -49,161 +47,151 @@ export function SignupPage() {
       setTimeout(() => {
         setMessage('');
       }, 3000);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4 font-sans">
+    <div className="min-h-screen bg-[#0A0C10] text-slate-100 font-sans flex items-center justify-center p-4 relative overflow-hidden selection:bg-emerald-500/20 selection:text-emerald-400">
+    
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-500/10 blur-[140px] rounded-full" />
+        <div className="absolute -bottom-[10%] -left-[10%] w-[500px] h-[500px] bg-indigo-500/05 blur-[120px] rounded-full" />
+      </div>
 
-      <div className="w-full max-w-md transition-all duration-500 ease-out opacity-100 translate-y-0">
-
+      <div className="w-full max-w-md relative z-10">
+        
         <div className="text-center mb-8">
-
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-2xl mb-4 shadow-lg">
-
-            <svg
-              className="w-8 h-8 text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-            </svg>
-
+          <div 
+            onClick={() => navigate("/")}
+            className="inline-flex items-center gap-3 cursor-pointer group mb-6"
+          >
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-slate-950 font-bold shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform duration-200">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+              </svg>
+            </div>
+            <span className="font-semibold text-2xl tracking-tight text-white">LinkSaver</span>
           </div>
 
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            Create Account
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-2">
+            Create an account
           </h1>
-
-          <p className="text-gray-600 dark:text-gray-400">
-            Start organizing your resources today
+          <p className="text-slate-400 text-sm">
+            Start building your personal knowledge base
           </p>
-
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border border-gray-100 dark:border-gray-700">
+        {/* Card Container */}
+        <div className="bg-[#12151C]/80 backdrop-blur-xl rounded-2xl p-6 sm:p-8 border border-white/[0.08] shadow-2xl shadow-black/80">
+          
+          {/* Status Message Notification */}
           {message && (
             <div
-              className={`mb-4 px-4 py-3 rounded-lg text-sm font-medium ${
+              className={`mb-6 p-3.5 rounded-lg text-xs font-medium flex items-center gap-2 border transition-all ${
                 messageType === 'success'
-                  ? 'bg-green-100 text-green-700 border border-green-300'
-                  : 'bg-red-100 text-red-700 border border-red-300'
+                  ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                  : 'bg-rose-500/10 text-rose-400 border-rose-500/20'
               }`}
             >
+              <span className={`w-1.5 h-1.5 rounded-full ${messageType === 'success' ? 'bg-emerald-400' : 'bg-rose-400'}`} />
               {message}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-
+          <form onSubmit={handleSubmit} className="space-y-4">
+            
             <div>
-
               <label 
-              htmlFor='name'
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                htmlFor="name"
+                className="block text-xs font-medium text-slate-300 mb-1.5 tracking-wide"
+              >
                 Full Name
               </label>
-
               <input
+                id="name"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="modi ji"
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                placeholder="Kritika"
+                className="w-full px-3.5 py-2.5 bg-[#0A0C10] border border-white/10 rounded-lg text-slate-100 text-sm placeholder:text-slate-600 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 transition-all"
                 required
               />
-
             </div>
-
             <div>
-
               <label 
-              htmlFor='email'
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                htmlFor="email"
+                className="block text-xs font-medium text-slate-300 mb-1.5 tracking-wide"
+              >
                 Email Address
               </label>
-
               <input
+                id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                className="w-full px-3.5 py-2.5 bg-[#0A0C10] border border-white/10 rounded-lg text-slate-100 text-sm placeholder:text-slate-600 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 transition-all"
                 required
               />
-
             </div>
-
             <div>
-
               <label 
-              htmlFor='password'
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                htmlFor="password"
+                className="block text-xs font-medium text-slate-300 mb-1.5 tracking-wide"
+              >
                 Password
               </label>
-
               <input
+                id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                className="w-full px-3.5 py-2.5 bg-[#0A0C10] border border-white/10 rounded-lg text-slate-100 text-sm placeholder:text-slate-600 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 transition-all"
                 required
               />
-
             </div>
-
             <div>
-
               <label 
-              htmlFor='confirmPassword'
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                htmlFor="confirmPassword"
+                className="block text-xs font-medium text-slate-300 mb-1.5 tracking-wide"
+              >
                 Confirm Password
               </label>
-
               <input
+                id="confirmPassword"
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                className="w-full px-3.5 py-2.5 bg-[#0A0C10] border border-white/10 rounded-lg text-slate-100 text-sm placeholder:text-slate-600 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 transition-all"
                 required
               />
-
             </div>
-
             <button
               type="submit"
-              className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 active:transform active:scale-[0.98] transition-all font-medium shadow-md hover:shadow-lg"
+              disabled={isLoading}
+              className="w-full mt-2 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold text-sm rounded-lg transition-all shadow-lg shadow-emerald-500/20 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Create Account
+              {isLoading ? 'Creating Account...' : 'Create Account'}
             </button>
-
           </form>
-
-          <div className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700 text-center text-sm text-gray-600 dark:text-gray-400">
-
+          <div className="mt-6 pt-5 border-t border-white/[0.08] text-center text-xs text-slate-400">
             Already have an account?{' '}
-
             <button
               onClick={() => navigate('/login')}
-              className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-semibold"
+              className="text-emerald-400 hover:text-emerald-300 font-medium transition-colors ml-1"
             >
-              Sign In
+              Sign in
             </button>
-
           </div>
 
         </div>
 
       </div>
-
     </div>
   );
 }
