@@ -1,22 +1,47 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { LandingPage } from './pages/landing';
-import { LoginPage } from './pages/login';
-import { SignupPage } from './pages/signup';
-import { Dashboard } from './pages/dashboard';
-import ForgotPassword  from './pages/ForgotPassword';
-import ResetPassword from './pages/ResetPassword';
+import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+
+import { LandingPage } from "./pages/landing";
+import { LoginPage } from "./pages/login";
+import { SignupPage } from "./pages/signup";
+import { Dashboard } from "./pages/dashboard";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+
+function ProtectedRoute({ children }) {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+}
+
+function PublicRoute({ children }) {
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return children;
+}
 
 export default function App() {
   const [notification, setNotification] = useState(null);
-const token = localStorage.getItem("token");
 
-const isAuthenticated =
-  token?.split(".")?.length === 3;
-  
   useEffect(() => {
     if (notification) {
-      const timer = setTimeout(() => setNotification(null), 3000);
+      const timer = setTimeout(() => {
+        setNotification(null);
+      }, 3000);
+
       return () => clearTimeout(timer);
     }
   }, [notification]);
@@ -29,38 +54,57 @@ const isAuthenticated =
     <Router>
       <Routes>
 
-        <Route path="/" element={<LandingPage />} />
-
-        <Route 
-          path="/login" 
-          element={
-            isAuthenticated ? <Navigate to="/dashboard" /> : <LoginPage />
-          } 
+        {/* Landing */}
+        <Route
+          path="/"
+          element={<LandingPage />}
         />
 
-        <Route 
-          path="/signup" 
+        {/* Login */}
+        <Route
+          path="/login"
           element={
-            isAuthenticated ? <Navigate to="/dashboard" /> : <SignupPage />
-          } 
+            <PublicRoute>
+              <LoginPage />
+            </PublicRoute>
+          }
         />
 
-        <Route 
-          path="/dashboard/*" 
+        {/* Signup */}
+        <Route
+          path="/signup"
           element={
-            isAuthenticated 
-              ? <Dashboard showToast={showToast} /> 
-              : <Navigate to="/login" />
-          } 
+            <PublicRoute>
+              <SignupPage />
+            </PublicRoute>
+          }
         />
+
+        {/* Dashboard */}
+        <Route
+          path="/dashboard/*"
+          element={
+            <ProtectedRoute>
+              <Dashboard showToast={showToast} />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Password */}
         <Route
           path="/forgot-password"
           element={<ForgotPassword />}
         />
+
         <Route
           path="/reset-password/:token"
           element={<ResetPassword />}
         />
+        <Route
+          path="*"
+          element={<Navigate to="/" replace />}
+        />
+
       </Routes>
 
       {notification && (
