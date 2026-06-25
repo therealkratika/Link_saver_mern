@@ -188,11 +188,11 @@ export function Dashboard({ showToast }) {
             <button
               type="button"
               onClick={() => setIsSidebarOpen(true)}
-              className="p-2 rounded-lg border border-gray-200 bg-white shadow-sm"
+              className="p-2 rounded-lg border border-gray-200 bg-white shadow-sm hover:bg-gray-50"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-6 h-6"
+                className="w-6 h-6 text-gray-700"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -212,7 +212,7 @@ export function Dashboard({ showToast }) {
                 setEditingLink(null);
                 setIsModalOpen(true);
               }}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg"
+              className="px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-lg transition-all shadow-sm font-medium"
             >
               Add Link
             </button>
@@ -239,8 +239,19 @@ export function Dashboard({ showToast }) {
                 setEditingLink(null);
                 setIsModalOpen(true);
               }}
-              className="hidden md:flex px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all items-center gap-2 shadow-sm font-semibold"
+              className="hidden md:flex px-6 py-3 bg-violet-600 hover:bg-violet-700 text-white rounded-xl transition-all items-center gap-2 shadow-sm font-semibold"
             >
+              <svg
+                width="20"
+                height="20"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
               Add Link
             </button>
           </div>
@@ -258,10 +269,12 @@ export function Dashboard({ showToast }) {
                         setSelectedTag(tag);
                         navigate('/dashboard');
                       }}
-                      className="p-6 bg-white border border-gray-200 rounded-2xl hover:border-blue-500 hover:shadow-md transition-all text-left group"
+                      className="p-6 bg-white border border-gray-200 rounded-2xl hover:border-violet-500 hover:shadow-md transition-all text-left group"
                     >
                       <div className="text-2xl mb-2">🏷️</div>
-                      <h3 className="font-bold text-gray-800">#{tag}</h3>
+                      <h3 className="font-bold text-gray-800 group-hover:text-violet-600 transition-colors">
+                        #{tag}
+                      </h3>
                     </button>
                   ))}
                 </div>
@@ -281,7 +294,7 @@ export function Dashboard({ showToast }) {
 
                   {selectedTag && (
                     <div className="mb-4 flex items-center gap-2">
-                      <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm font-semibold">
+                      <span className="px-3 py-1 bg-violet-50 text-violet-600 rounded-full text-sm font-semibold border border-violet-100">
                         #{selectedTag}
                       </span>
 
