@@ -3,14 +3,15 @@ const sendVerificationEmail = async (email, token) => {
     `${process.env.BASE_URL}/api/auth/verify/${token}`;
 
   try {
-    const response = await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from: "onboarding@resend.dev",
       to: email,
       subject: "Verify Your Email",
+
       html: `
         <h2>Email Verification</h2>
 
-        <p>Click the button below to verify your email:</p>
+        <p>Please verify your email by clicking the button below:</p>
 
         <a href="${verificationLink}">
           Verify Email
@@ -18,11 +19,20 @@ const sendVerificationEmail = async (email, token) => {
       `,
     });
 
-    console.log("RESEND RESPONSE:", response);
+    console.log("========== RESEND ==========");
+    console.log("TO:", email);
+    console.log("DATA:", data);
+    console.log("ERROR:", error);
+    console.log("============================");
 
-    return response;
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return data;
+
   } catch (error) {
-    console.error("RESEND ERROR:", error);
+    console.error("VERIFICATION EMAIL ERROR:", error);
     throw error;
   }
 };
