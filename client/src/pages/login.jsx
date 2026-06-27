@@ -18,8 +18,16 @@ export function LoginPage() {
       await AuthSDK.login({ email, password });
       navigate("/dashboard");
       globalThis.location.reload();
-    } catch (err) {
-      setError(err.msg || "Login failed. Please check your credentials.");
+    }catch (err) {
+  const message = err.msg || err.message || "Login failed. Please check your credentials.";
+
+  setError(message);
+
+  if (message.toLowerCase().includes("verify your email")) {
+    setShowResend(true);
+  } else {
+    setShowResend(false);
+  }
     } finally {
       setIsLoading(false);
     }
