@@ -122,6 +122,56 @@ const verifyEmail = async (req, res) => {
     return res.status(400).json({ msg: "Invalid or expired token", error: err.message });
   }
 };
+const resendVerification = async (req, res) => {
+  const { error } = emailSchema.validate(req.body);
+
+  if (error) {
+    return res.status(400).json({
+      msg: error.details[0].message,
+    });
+  }
+
+  try {
+    const { email } = req.body;
+    const sanitizedEmail = email.trim().toLowerCase();
+
+    const user = await User.findOne({
+      email: sanitizedEmail,
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        msg: "User not found",
+      });
+    }
+    if (user.isVerified) {
+      return res.status(400).json({
+        msg: "Email is already verified",
+      });
+    }
+    const verificationToken = signToken(
+      { email: sanitizedEmail },
+      "1d"
+    );
+    user.verificationToken = verificationToken;
+    await user.save();
+    await sendVerificationEmail(
+      sanitizedEmail,
+      verificationToken
+    );
+
+    return res.json({
+      msg: "Verification email sent successfully",
+    });
+
+  } catch (err) {
+    console.error("RESEND VERIFICATION ERROR:", err);
+
+    return res.status(500).json({
+      msg: "Failed to resend verification email",
+    });
+  }
+};
 
 const forgotPassword = async (req, res) => {
   const { error } = emailSchema.validate(req.body);
@@ -176,4 +226,6 @@ module.exports = {
   forgotPassword,
   resetPassword,
   verifyEmail,
+  resendVerification
+
 };
