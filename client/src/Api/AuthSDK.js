@@ -16,30 +16,25 @@ export const AuthSDK = {
   },
 
   login: async ({ email, password }) => {
-    try {
-      const res = await api.post("/auth/login", {
-        email,
-        password,
-      });
+  try {
+    const res = await api.post("/auth/login", {
+      email,
+      password,
+    });
 
-      const token = res?.data?.token;
+    const token = res?.data?.token;
 
-      const jwtRegex =
-        /^[a-zA-Z0-9\-_]+\.[a-zA-Z0-9\-_]+\.[a-zA-Z0-9\-_]+$/;
-
-      if (
-        token &&
-        typeof token === "string" &&
-        jwtRegex.test(token)
-      ) {
-        localStorage.setItem("token", token);
-      }
-
-      return res.data;
-    } catch (err) {
-      throw err.response?.data || { msg: "Login failed" };
+    if (token) {
+      localStorage.setItem("token", token);
     }
-  },
+
+    return res.data;
+  } catch (err) {
+    throw err.response?.data || {
+      msg: "Login failed",
+    };
+  }
+},
 
   // 🔄 Resend verification email
   resendVerification: async (email) => {
