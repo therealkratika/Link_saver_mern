@@ -1,40 +1,87 @@
-const { Resend } = require("resend");
+const nodemailer = require("nodemailer");
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+  host: process.env.BREVO_SMTP_HOST,
+  port: Number(process.env.BREVO_SMTP_PORT),
+  secure: false,
+  auth: {
+    user: process.env.BREVO_SMTP_USER,
+    pass: process.env.BREVO_SMTP_KEY,
+  },
+});
 
+// ===============================
+// Send Verification Email
+// ===============================
 const sendVerificationEmail = async (email, token) => {
   const verificationLink =
     `${process.env.BASE_URL}/api/auth/verify/${token}`;
 
   try {
-    const { data, error } = await resend.emails.send({
-      from: "onboarding@resend.dev",
+    const info = await transporter.sendMail({
+      from: `"LinkSaver" <therealkratikagupta@gmail.com>`,
       to: email,
-      subject: "Verify Your Email",
+      subject: "Verify Your LinkSaver Account",
+
       html: `
-        <h2>Email Verification</h2>
+        <div style="
+          font-family: Arial, sans-serif;
+          max-width: 600px;
+          margin: auto;
+          padding: 30px;
+          background: #f8fafc;
+        ">
+          <div style="
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+          ">
+            <h2 style="color: #111827;">
+              Verify Your Email
+            </h2>
 
-        <p>Please verify your email by clicking the button below:</p>
+            <p style="color: #4b5563;">
+              Welcome to LinkSaver!
+            </p>
 
-        <p>
-          <a href="${verificationLink}">
-            Verify Email
-          </a>
-        </p>
+            <p style="color: #4b5563;">
+              Please verify your email address by clicking the button below.
+            </p>
+
+            <a
+              href="${verificationLink}"
+              style="
+                display: inline-block;
+                margin-top: 15px;
+                padding: 12px 24px;
+                background: #10b981;
+                color: white;
+                text-decoration: none;
+                border-radius: 8px;
+                font-weight: bold;
+              "
+            >
+              Verify Email
+            </a>
+
+            <p style="
+              margin-top: 25px;
+              color: #6b7280;
+              font-size: 13px;
+            ">
+              This verification link will expire in 24 hours.
+            </p>
+          </div>
+        </div>
       `,
     });
 
-    console.log("========== RESEND ==========");
+    console.log("========== VERIFICATION EMAIL ==========");
     console.log("TO:", email);
-    console.log("DATA:", data);
-    console.log("ERROR:", error);
-    console.log("============================");
+    console.log("MESSAGE ID:", info.messageId);
+    console.log("=========================================");
 
-    if (error) {
-      throw new Error(error.message);
-    }
-
-    return data;
+    return info;
   } catch (error) {
     console.error("VERIFICATION EMAIL ERROR:", error);
     throw error;
@@ -42,65 +89,87 @@ const sendVerificationEmail = async (email, token) => {
 };
 
 
+// ===============================
+// Send Reset Password Email
+// ===============================
 const sendResetPasswordEmail = async (email, token) => {
-  // Change this to your frontend URL if needed
   const resetLink =
     `${process.env.FRONTEND_URL}/reset-password/${token}`;
 
   try {
-    const { data, error } = await resend.emails.send({
-      from: "onboarding@resend.dev",
+    const info = await transporter.sendMail({
+      from: `"LinkSaver" <therealkratikagupta@gmail.com>`,
       to: email,
-      subject: "Reset Your Password",
+      subject: "Reset Your LinkSaver Password",
+
       html: `
-        <h2>Password Reset</h2>
+        <div style="
+          font-family: Arial, sans-serif;
+          max-width: 600px;
+          margin: auto;
+          padding: 30px;
+          background: #f8fafc;
+        ">
+          <div style="
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+          ">
+            <h2 style="color: #111827;">
+              Reset Your Password
+            </h2>
 
-        <p>
-          We received a request to reset your password.
-        </p>
+            <p style="color: #4b5563;">
+              We received a request to reset your LinkSaver password.
+            </p>
 
-        <p>
-          Click the button below to choose a new password:
-        </p>
+            <p style="color: #4b5563;">
+              Click the button below to create a new password.
+            </p>
 
-        <p>
-          <a
-            href="${resetLink}"
-            style="
-              display: inline-block;
-              padding: 12px 20px;
-              background-color: #3D281D;
-              color: white;
-              text-decoration: none;
-              border-radius: 6px;
-            "
-          >
-            Reset Password
-          </a>
-        </p>
+            <a
+              href="${resetLink}"
+              style="
+                display: inline-block;
+                margin-top: 15px;
+                padding: 12px 24px;
+                background: #10b981;
+                color: white;
+                text-decoration: none;
+                border-radius: 8px;
+                font-weight: bold;
+              "
+            >
+              Reset Password
+            </a>
 
-        <p>
-          This link will expire in 1 hour.
-        </p>
+            <p style="
+              margin-top: 25px;
+              color: #6b7280;
+              font-size: 13px;
+            ">
+              This link will expire in 1 hour.
+            </p>
 
-        <p>
-          If you didn't request a password reset, you can safely ignore
-          this email.
-        </p>
+            <p style="
+              margin-top: 15px;
+              color: #6b7280;
+              font-size: 13px;
+            ">
+              If you didn't request a password reset, you can safely ignore
+              this email.
+            </p>
+          </div>
+        </div>
       `,
     });
 
-    console.log("========== PASSWORD RESET ==========");
+    console.log("========== PASSWORD RESET EMAIL ==========");
     console.log("TO:", email);
-    console.log("DATA:", data);
-    console.log("ERROR:", error);
-    console.log("====================================");
+    console.log("MESSAGE ID:", info.messageId);
+    console.log("==========================================");
 
-    if (error) {
-      throw new Error(error.message);
-    }
-
-    return data;
+    return info;
   } catch (error) {
     console.error("RESET PASSWORD EMAIL ERROR:", error);
     throw error;
