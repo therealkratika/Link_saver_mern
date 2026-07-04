@@ -104,22 +104,42 @@ const login = async (req, res) => {
 const verifyEmail = async (req, res) => {
   try {
     const { token } = req.params;
-    if (!token) return res.status(400).json({ msg: "Token is required" });
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findOne({ email: decoded.email });
+    if (!token) {
+      return res.status(400).json({
+        msg: "Token is required",
+      });
+    }
+
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET
+    );
+
+    const user = await User.findOne({
+      email: decoded.email,
+      verificationToken: token,
+    });
 
     if (!user) {
-      return res.status(404).json({ msg: "User not found" });
+      return res.status(400).json({
+        msg: "Invalid verification token",
+      });
     }
 
     user.isVerified = true;
     user.verificationToken = undefined;
+
     await user.save();
 
-    return res.json({ msg: "Email verified successfully" });
+    return res.json({
+      msg: "Email verified successfully",
+    });
+
   } catch (err) {
-    return res.status(400).json({ msg: "Invalid or expired token", error: err.message });
+    return res.status(400).json({
+      msg: "Invalid or expired token",
+    });
   }
 };
 const resendVerification = async (req, res) => {
